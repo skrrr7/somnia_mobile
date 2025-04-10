@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import logo from '../assets/SOMNiA_LOGO.png';
 
 const NavigationBar = () => {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ const NavigationBar = () => {
     <div className="w-full flex justify-between items-center p-4 sm:px-36 absolute top-0 bg-blue-950 h-23 z-50">
       <div className="flex items-center space-x-1 text-white text-5xl font-light">
         <span>S</span>
-        <img src="src/assets/SOMNIA_LOGO.png" alt="logo" className="w-8 h-8 object-contain" />
+        <img src={logo} alt="logo" className="w-8 h-8 object-contain" />
         <span>M</span>
         <span>N</span>
         <span>i</span>
@@ -81,7 +82,7 @@ const NavigationBar = () => {
       >
         Reset Password
       </div>
-      
+
             <div
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
               onClick={logout}
