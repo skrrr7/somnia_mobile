@@ -134,7 +134,7 @@ const onSubmitNewPassword = async (e) => {
         <h1>New Password</h1>
         <p>Enter your new password</p>
         <div>
-          <input type="password" autocomplete="new-password" placeholder="Password" value={newPassword} onChange={e=>setNewPassword (e.target.value)} required/>
+          <input type="password" autoComplete="new-password" placeholder="Password" value={newPassword} onChange={e=>setNewPassword (e.target.value)} required/>
           </div>
           <button>Submit</button>
         

@@ -74,6 +74,14 @@ const NavigationBar = () => {
                 Verify Email
               </div>
             )}
+
+            <div
+        className="px-4 py-2 hover:bg-gray-100 border-b cursor-pointer"
+        onClick={() => navigate('/reset-password')}
+      >
+        Reset Password
+      </div>
+      
             <div
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
               onClick={logout}
