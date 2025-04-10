@@ -7,19 +7,21 @@ import axios from 'axios';
 const NavigationBar = () => {
   const navigate = useNavigate();
   const { userData, backendUrl, setUserData, setIsLoggedin } = useContext(AppContext);
-
+  axios.defaults.withCredentials = true;
   const sendVerificationOtp = async () => {
     try {
-      axios.defaults.withCredentials = true;
-      const { data } = await axios.post(backendUrl + '/api/auth/send-verify-otp');
+   
+
+      const { data } = await axios.post(backendUrl + `/api/auth/send-verify-otp`);
 
       if (data.success) {
-        navigate('/email-verify');
         toast.success(data.message);
+        navigate('/verify-email');
       } else {
         toast.error(data.message);
       }
     } catch (error) {
+      console.error('OTP Error:', error); // Debug error
       toast.error(error.message);
     }
   };
@@ -27,13 +29,18 @@ const NavigationBar = () => {
   const logout = async () => {
     try {
       axios.defaults.withCredentials = true;
-      const { data } = await axios.post(backendUrl + '/api/auth/logout');
+
+      const { data } = await axios.post(`${backendUrl}/api/auth/logout`);
+
       if (data.success) {
         setIsLoggedin(false);
         setUserData(null);
         navigate('/');
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
+      console.error('Logout Error:', error);
       toast.error(error.message);
     }
   };
@@ -56,11 +63,13 @@ const NavigationBar = () => {
           </div>
           <div className="absolute right-0 mt-2 bg-white text-black rounded-lg shadow-lg w-48 opacity-0 group-hover:opacity-100 group-hover:visible transition-opacity duration-300 invisible">
             {userData.isAccountVerified ? (
-              <div className="px-4 py-2 hover:bg-gray-100 border-b">Account Verified</div>
+              <div className="px-4 py-2 hover:bg-gray-100 border-b">
+                Account Verified
+              </div>
             ) : (
               <div
                 className="px-4 py-2 hover:bg-gray-100 border-b cursor-pointer"
-                onClick={()=> navigate('/verify-email')}
+                onClick={sendVerificationOtp}
               >
                 Verify Email
               </div>

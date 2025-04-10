@@ -131,7 +131,7 @@ const onSubmitNewPassword = async (e) => {
  {/*Enter new password*/}
       {isOtpSubmitted && isEmailSent && (
       <form onSubmit={onSubmitNewPassword}>
-        <h1>Reset Password</h1>
+        <h1>New Password</h1>
         <p>Enter your new password</p>
         <div>
           <input type="password" autocomplete="new-password" placeholder="Password" value={newPassword} onChange={e=>setNewPassword (e.target.value)} required/>

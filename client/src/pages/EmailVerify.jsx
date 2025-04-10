@@ -2,6 +2,9 @@ import React, { useContext, useEffect } from 'react';
 import { AppContext } from '../context/AppContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const EmailVerify = () => {
 
   axios.defaults.withCredentials=true;
