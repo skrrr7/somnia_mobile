@@ -1,79 +1,115 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { AppContext } from '../context/AppContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import background from '../assets/background.jpeg';
+import logo from '../assets/SOMNIA_LOGO.png';
 
 const EmailVerify = () => {
-
-  axios.defaults.withCredentials=true;
-  const inputRefs = React.useRef([])
-  const {backendUrl, isLoggedin, userData, getUserData} = useContext(AppContext);
-  
+  axios.defaults.withCredentials = true;
+  const inputRefs = useRef([]);
+  const { backendUrl, isLoggedin, userData, getUserData } = useContext(AppContext);
   const navigate = useNavigate();
 
-  const handleInput = (e, index)=>{
-    if(e.target.value.length > 0 && index < inputRefs.current.length - 1){
+  const handleInput = (e, index) => {
+    if (e.target.value.length > 0 && index < inputRefs.current.length - 1) {
       inputRefs.current[index + 1].focus();
     }
-  }
+  };
 
-  const handleKeyDown = (e,index)=>{
-    if(e.key === 'Backspace' && e.target.value === '' && index > 0){
-      inputRefs.current[index-1].focus();
+  const handleKeyDown = (e, index) => {
+    if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+      inputRefs.current[index - 1].focus();
     }
-  }
+  };
 
-  const handlePaste = (e)=>{
-    const paste = e.clipboardData.getData('text')
+  const handlePaste = (e) => {
+    const paste = e.clipboardData.getData('text');
     const pasteArray = paste.split('');
-    pasteArray.forEach((char,index)=>{
-      if(inputRefs.current[index]){
+    pasteArray.forEach((char, index) => {
+      if (inputRefs.current[index]) {
         inputRefs.current[index].value = char;
       }
-    })
-  }
+    });
+  };
 
   const onSubmitHandler = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
       const otpArray = inputRefs.current.map(e => e.value);
-      const otp = otpArray.join('')
+      const otp = otpArray.join('');
 
-      const {data} = await axios.post(backendUrl + '/api/auth/verify-account',{otp});
+      const { data } = await axios.post(backendUrl + '/api/auth/verify-account', { otp });
 
-      if(data.success){
-        toast.success(data.message)
-        getUserData()
-        navigate('/')
-      }else{
-        toast.error(data.message)
+      if (data.success) {
+        toast.success(data.message);
+        getUserData();
+        navigate('/');
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     }
-  }
+  };
 
-  useEffect(()=>{
-    isLoggedin && userData && userData.isAccountVerified && navigate('/')
-  },[isLoggedin,userData])
+  useEffect(() => {
+    if (isLoggedin && userData?.isAccountVerified) {
+      navigate('/');
+    }
+  }, [isLoggedin, userData]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <form onSubmit={onSubmitHandler}  className="flex flex-col items-center bg-white p-6 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-semibold mb-4">Email Verification OTP</h1>
-        <p className="text-gray-600 mb-6">Enter the 6-digit code sent to your email ID.</p>
-        <div className="flex space-x-2 mb-4" onPaste={handlePaste}>
-          {Array(6).fill(0).map((_, index) => (
-            <input ref={e => inputRefs.current[index] = e} onInput={(e)=> handleInput(e,index)} onKeyDown={(e)=> handleKeyDown(e,index)}
-             type="text" maxLength="1" key={index} required className="w-12 h-12 text-center border rounded-md text-xl"/>
-          ))}
+    <div
+      className="min-h-screen flex items-center justify-center"
+      style={{
+        backgroundImage: `url(${background})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      }}
+    >
+      <div
+        className="max-w-md w-full rounded-lg shadow-lg p-8"
+        style={{
+          backgroundColor: 'rgba(15, 32, 78, 0.8)',
+          boxShadow: '0 0 25px 5px rgba(255, 255, 255, 0.6)',
+        }}
+      >
+        <div className="text-center mb-6">
+          <img
+            src={logo}
+            alt="Somnia Logo"
+            className="w-24 h-24 mx-auto mb-4"
+            style={{ filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.8))' }}
+          />
+          <h2 className="text-white text-3xl font-light">Verify Your Email</h2>
+          <p className="text-gray-300 mt-2">Enter the 6-digit code sent to your email.</p>
         </div>
-        <button type="submit" className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-          Verify Email
-        </button>
-      </form>
+        <form onSubmit={onSubmitHandler} className="flex flex-col items-center space-y-6">
+          <div className="flex space-x-3" onPaste={handlePaste}>
+            {Array(6).fill(0).map((_, index) => (
+              <input
+                key={index}
+                type="text"
+                maxLength="1"
+                required
+                ref={el => inputRefs.current[index] = el}
+                onInput={(e) => handleInput(e, index)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                className="w-12 h-12 text-center border border-white bg-transparent text-white rounded-md text-2xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+            ))}
+          </div>
+          <button
+            type="submit"
+            className="w-full py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-800 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Verify Email
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
