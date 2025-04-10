@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AppContext } from '../context/AppContext';
 import background from '../assets/background.jpeg';
-import logo from '/src/assets/SOMNIA_LOGO.png';
+import logo from '../assets/SOMNIA_LOGO.png';
 
 
 const Register = () => {

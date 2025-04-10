@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import background from '../assets/background.jpeg';
-import logo from '/src/assets/SOMNIA_LOGO.png';
+import logo from '../assets/SOMNIA_LOGO.png';
 
 const EmailVerify = () => {
   axios.defaults.withCredentials = true;
