@@ -4,7 +4,7 @@ import { AppContext } from '../context/AppContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import background from '../assets/background.jpeg';
-import logo from '../assets/SOMNIA_LOGO.png';
+import logo from '../assets/SOMNiA_LOGO.png';
 
 const ResetPassword = () => {
   const navigate = useNavigate();

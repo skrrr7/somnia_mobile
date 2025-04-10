@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import { toast } from 'react-toastify';
 import background from '../assets/background.jpeg';
-import logo from '../assets/SOMNIA_LOGO.png';
+import logo from '../assets/SOMNiA_LOGO.png';
 
 const Login = () => {
   const navigate = useNavigate();
