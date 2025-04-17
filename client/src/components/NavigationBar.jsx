@@ -47,7 +47,7 @@ const NavigationBar = () => {
   };
 
   return (
-    <div className="w-full flex justify-between items-center p-4 sm:px-36 absolute top-0 bg-blue-950 h-23 z-50">
+    <div className="w-full flex justify-between items-center p-4 sm:px-36 absolute top-0 bg-indigo-950 h-20 z-50">
       <div className="flex items-center space-x-1 text-white text-5xl font-light">
         <span>S</span>
         <img src={logo} alt="logo" className="w-8 h-8 object-contain" />
