@@ -48,7 +48,7 @@ export default function Login() {
       // Handle successful login
       if (response.data.success) {
         toast.success('Login successful!');
-        router.push('/home'); // Navigate to home page
+        router.replace('/home'); // Changed from push to replace to prevent going back to login
       } else {
         toast.error('Login failed. Please try again.');
       }
