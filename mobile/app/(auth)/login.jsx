@@ -1,6 +1,8 @@
 import { View, Text, Image, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useState } from 'react'
-import { Link } from 'expo-router'
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useRouter, Link } from 'expo-router'
 import { useFonts } from 'expo-font';
 import { Ionicons} from '@expo/vector-icons';
 import AuthContainer from './authcontainer';
@@ -12,6 +14,8 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const router = useRouter();
+
   const [fontsLoaded] = useFonts({
     'RussoOne': require('../../assets/fonts/RussoOne-Regular.ttf'),
   });
@@ -20,7 +24,41 @@ export default function Login() {
     return null;
   }
 
-  const handleLogin = () => {}
+  // Use localhost for web development
+  const backendUrl = 'http://localhost:4000';
+
+  const handleLogin = async () => {
+    setIsLoading(true);
+
+    // Create user data object
+    const userData = { 
+      email, 
+      password 
+    };
+
+    try {
+      // Send POST request to the backend to login
+      const response = await axios.post(`${backendUrl}/api/auth/login`, userData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
+
+      // Handle successful login
+      if (response.data.success) {
+        toast.success('Login successful!');
+        router.push('/home'); // Navigate to home page
+      } else {
+        toast.error('Login failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      toast.error(error.response?.data?.message || 'An error occurred. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
   
   return (
     <AuthContainer>
@@ -45,7 +83,7 @@ export default function Login() {
               placeholder='Enter your email' 
               placeholderTextColor={'#787878'}
               value={email}
-              onChange={setEmail}
+              onChangeText={setEmail}
               keyboardType='email-address'
               autoCapitalize='none'
               style={styles.input}/>
@@ -63,7 +101,7 @@ export default function Login() {
               placeholder='Enter your password' 
               placeholderTextColor={'#787878'}
               value={password}
-              onChange={setPassword}
+              onChangeText={setPassword}
               secureTextEntry={!showPassword}
               style={styles.input} />
             <TouchableOpacity
