@@ -1,13 +1,10 @@
-import { View, ImageBackground, Image, KeyboardAvoidingView, Platform} from 'react-native';
+import { View, /* ImageBackground, */ Image, KeyboardAvoidingView, Platform} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import styles from '../../assets/styles/authcontainer.styles'
 
 export default function AuthContainer({ children }) {
     return (
-        <ImageBackground 
-            source={require('../../assets/images/background.jpeg')}
-            resizeMode='cover'
-            style={styles.background}>
+        <View style={[styles.background, { backgroundColor: '#000' }]}> 
             <KeyboardAvoidingView
                 style={{flex: 1}}
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -34,6 +31,6 @@ export default function AuthContainer({ children }) {
                     </View>
                 </View>
             </KeyboardAvoidingView>
-        </ImageBackground>
+        </View>
       );
 }
