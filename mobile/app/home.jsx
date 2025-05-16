@@ -23,11 +23,76 @@ export default function Home() {
     datasets: [
       {
         data: [7, 6.5, 8, 7.5, 8.3, 7, 8],
-        color: (opacity = 1) => `rgba(162, 89, 255, ${opacity})`, // Line color
+        color: (opacity = 1) => `rgba(162, 89, 255, ${opacity})`,
         strokeWidth: 3,
       },
     ],
   };
+
+  // Function to get sleep recommendations
+  const getSleepRecommendations = () => {
+    const lastSleepHours = sleepData.datasets[0].data[sleepData.datasets[0].data.length - 1];
+    const recommendations = [];
+
+    // Sleep duration recommendations
+    if (lastSleepHours < 6) {
+      recommendations.push({
+        title: 'Sleep Duration Alert',
+        message: 'Your sleep duration is below the recommended minimum. Try to aim for 7-9 hours of sleep.',
+        icon: 'warning-outline',
+        color: '#ff4d6d'
+      });
+    } else if (lastSleepHours > 9) {
+      recommendations.push({
+        title: 'Oversleeping Notice',
+        message: 'You\'re sleeping more than the recommended amount. While rest is important, too much sleep can affect your energy levels.',
+        icon: 'information-circle-outline',
+        color: '#ffd60a'
+      });
+    } else {
+      recommendations.push({
+        title: 'Good Sleep Duration',
+        message: 'Your sleep duration is within the recommended range of 7-9 hours. Keep up the good work!',
+        icon: 'checkmark-circle-outline',
+        color: '#43e97b'
+      });
+    }
+
+    // Sleep quality recommendations
+    if (parseInt(sleepStats.sleepQuality) < 70) {
+      recommendations.push({
+        title: 'Sleep Quality Improvement',
+        message: 'Your sleep quality could be improved. Consider establishing a consistent sleep schedule and creating a relaxing bedtime routine.',
+        icon: 'moon-outline',
+        color: '#5d3fd3'
+      });
+    } else {
+      recommendations.push({
+        title: 'Excellent Sleep Quality',
+        message: 'Your sleep quality is excellent! Continue maintaining your healthy sleep habits.',
+        icon: 'star-outline',
+        color: '#ffd60a'
+      });
+    }
+
+    // General sleep tips
+    recommendations.push({
+      title: 'Sleep Environment Tip',
+      message: 'Keep your bedroom cool, dark, and quiet for optimal sleep conditions.',
+      icon: 'home-outline',
+      color: '#a259ff'
+    });
+
+    recommendations.push({
+      title: 'Bedtime Routine',
+      message: 'Try to maintain a consistent bedtime routine to signal your body it\'s time to sleep.',
+      icon: 'time-outline',
+      color: '#ff8c42'
+    });
+
+    return recommendations;
+  };
+
   const screenWidth = Dimensions.get('window').width;
 
   // Stat boxes data
@@ -153,6 +218,21 @@ export default function Home() {
             </View>
           </View>
         )}
+
+        {selectedTab === 'recommendations' && (
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Sleep Recommendations</Text>
+            {getSleepRecommendations().map((rec, index) => (
+              <View key={index} style={[styles.recommendationItem, { borderLeftColor: rec.color }]}>
+                <Ionicons name={rec.icon} size={24} color={rec.color} style={styles.recommendationIcon} />
+                <View style={styles.recommendationContent}>
+                  <Text style={styles.recommendationTitle}>{rec.title}</Text>
+                  <Text style={styles.recommendationMessage}>{rec.message}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
       </ScrollView>
 
       {/* Bottom Navigation */}
@@ -172,6 +252,18 @@ export default function Home() {
           </TouchableOpacity>
           <TouchableOpacity 
             style={styles.navItem}
+            onPress={() => setSelectedTab('recommendations')}
+            activeOpacity={0.7}
+          >
+            <Ionicons 
+              name={selectedTab === 'recommendations' ? 'bulb' : 'bulb-outline'} 
+              size={24} 
+              color={selectedTab === 'recommendations' ? '#a259ff' : '#fff'} 
+            />
+            <Text style={[styles.navText, selectedTab === 'recommendations' && styles.navTextActive]}>Tips</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.navItem}
             onPress={() => setSelectedTab('profile')}
             activeOpacity={0.7}
           >
@@ -186,4 +278,4 @@ export default function Home() {
       </View>
     </LinearGradient>
   );
-} 
+}
