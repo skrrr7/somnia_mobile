@@ -3,7 +3,7 @@ import { AppContext } from '../context/AppContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import background from '../assets/background.jpeg';
+import { motion } from 'framer-motion';
 import logo from '../assets/SOMNiA_LOGO.png';
 
 const EmailVerify = () => {
@@ -61,55 +61,83 @@ const EmailVerify = () => {
   }, [isLoggedin, userData]);
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center"
-      style={{
-        backgroundImage: `url(${background})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-      }}
-    >
-      <div
-        className="max-w-md w-full rounded-lg shadow-lg p-8"
-        style={{
-          backgroundColor: 'rgba(15, 32, 78, 0.8)',
-          boxShadow: '0 0 25px 5px rgba(255, 255, 255, 0.6)',
-        }}
+    <div className="h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-gray-900/40 to-gray-900/80" />
+      
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-md w-full mx-4 relative z-10"
       >
-        <div className="text-center mb-6">
-          <img
-            src={logo}
-            alt="Somnia Logo"
-            className="w-24 h-24 mx-auto mb-4"
-            style={{ filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.8))' }}
-          />
-          <h2 className="text-white text-3xl font-light">Verify Your Email</h2>
-          <p className="text-gray-300 mt-2">Enter the 6-digit code sent to your email.</p>
-        </div>
-        <form onSubmit={onSubmitHandler} className="flex flex-col items-center space-y-6">
-          <div className="flex space-x-3" onPaste={handlePaste}>
-            {Array(6).fill(0).map((_, index) => (
-              <input
-                key={index}
-                type="text"
-                maxLength="1"
-                required
-                ref={el => inputRefs.current[index] = el}
-                onInput={(e) => handleInput(e, index)}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                className="w-12 h-12 text-center border border-white bg-transparent text-white rounded-md text-2xl focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            ))}
+        <div className="bg-gray-900/40 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-800/50 p-6">
+          <div className="text-center mb-6">
+            <motion.img
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              src={logo}
+              alt="Somnia Logo"
+              className="w-16 h-16 mx-auto mb-3"
+            />
+            <motion.h2
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-2xl font-light text-white mb-1"
+            >
+              Verify Your Email
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="text-gray-400 text-sm"
+            >
+              Enter the 6-digit code sent to your email
+            </motion.p>
           </div>
-          <button
-            type="submit"
-            className="w-full py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-800 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+          <motion.form
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            onSubmit={onSubmitHandler}
+            className="space-y-6"
           >
-            Verify Email
-          </button>
-        </form>
-      </div>
+            <div className="flex justify-center space-x-2" onPaste={handlePaste}>
+              {Array(6).fill(0).map((_, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  maxLength="1"
+                  required
+                  ref={el => inputRefs.current[index] = el}
+                  onInput={(e) => handleInput(e, index)}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
+                  className="w-10 h-10 text-center bg-gray-800/30 border border-gray-700/50 rounded-lg text-white text-lg focus:outline-none focus:border-blue-500 transition-colors"
+                />
+              ))}
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm flex items-center justify-center"
+            >
+              Verify Email
+            </button>
+
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => navigate('/login')}
+                className="text-blue-400 hover:text-blue-300 text-sm"
+              >
+                Back to Login
+              </button>
+            </div>
+          </motion.form>
+        </div>
+      </motion.div>
     </div>
   );
 };

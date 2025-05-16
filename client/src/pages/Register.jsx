@@ -1,26 +1,49 @@
 import React, { useState, useContext } from 'react';
+import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AppContext } from '../context/AppContext';
 import background from '../assets/background.jpeg';
 import logo from '../assets/SOMNiA_LOGO.png';
-
+import {
+  UserIcon,
+  EnvelopeIcon,
+  LockClosedIcon,
+  ClipboardDocumentCheckIcon,
+} from '@heroicons/react/24/outline';
 
 const Register = () => {
   const navigate = useNavigate();
-  const { backendUrl, getUserData } = useContext(AppContext);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { backendUrl } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
 
     try {
+      setIsLoading(true);
       const { data } = await axios.post(
         backendUrl + '/api/auth/register',
-        { name, email, password },
+        {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        },
         {
           withCredentials: true,
           headers: {
@@ -39,76 +62,189 @@ const Register = () => {
       }
     } catch (error) {
       toast.error(error.response?.data?.message || 'An error occurred during registration.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div
-  className="min-h-screen flex items-center justify-center"
-  style={{
-    backgroundImage: `url(${background})`,
-    backgroundSize: 'cover', // Ensures background image covers the screen without stretching
-    backgroundPosition: 'center', // Centers the background image
-    backgroundAttachment: 'fixed', // Keeps the background fixed during scrolling (optional)
-  }}
->
-  <div
-  className="max-w-md w-full rounded-lg shadow-lg p-8"
-  style={{
-    backgroundColor: 'rgba(15, 32, 78, 0.8)', // Blue-950 with transparency
-    boxShadow: '0 0 25px 5px rgba(255, 255, 255, 0.6)', // White glow effect
-  }}
->
-    <div className="text-center mb-6">
-      <img
-        src={logo}
-        alt="Somnia Logo"
-        className="w-24 h-24 mx-auto mb-4"
-        style={{ filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.8))'}}
-      />
-      <h2 className="space-x-1 text-white text-5xl font-light">Create Account</h2>
-    </div>
-    <form onSubmit={onSubmitHandler} className="space-y-6">
-      <div>
-        <input
-          type="text"
-          placeholder="Full Name"
-          className="w-full border border-white-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 space-x-1 text-white text-1xl font-light"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full border border-white-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 space-x-1 text-white  text-1xl font-light"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full border border-white-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 space-x-1 text-white text-1xl font-light"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      <button
-        type="submit"
-        className="w-full py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-blue-800 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+    <div className="h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-gray-900/40 to-gray-900/80" />
+      
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-md w-full mx-4 relative z-10"
       >
-        Register
-      </button>
-    </form>
-  </div>
-</div>
+        <div className="bg-gray-900/40 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-800/50 p-6">
+          {/* Logo and Title */}
+          <div className="text-center mb-6">
+            <motion.img
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              src={logo}
+              alt="Somnia Logo"
+              className="w-16 h-16 mx-auto mb-3"
+            />
+            <motion.h2
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-2xl font-light text-white mb-1"
+            >
+              Create Account
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="text-gray-400 text-sm"
+            >
+              Join SOMNiA's medical sleep analysis platform
+            </motion.p>
+          </div>
 
+          {/* Registration Form */}
+          <motion.form
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            onSubmit={onSubmitHandler}
+            className="space-y-4"
+          >
+            {/* Name Input */}
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-1">
+                Full Name
+              </label>
+              <div className="relative">
+                <UserIcon className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full pl-10 pr-4 py-2 bg-gray-800/30 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors text-sm"
+                  placeholder="Enter your full name"
+                />
+              </div>
+            </div>
+
+            {/* Email Input */}
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-1">
+                Email Address
+              </label>
+              <div className="relative">
+                <EnvelopeIcon className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full pl-10 pr-4 py-2 bg-gray-800/30 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors text-sm"
+                  placeholder="Enter your email"
+                />
+              </div>
+            </div>
+
+            {/* Password Input */}
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-1">
+                Password
+              </label>
+              <div className="relative">
+                <LockClosedIcon className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  className="w-full pl-10 pr-4 py-2 bg-gray-800/30 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors text-sm"
+                  placeholder="Create a password"
+                />
+              </div>
+            </div>
+
+            {/* Confirm Password Input */}
+            <div>
+              <label className="block text-gray-300 text-sm font-medium mb-1">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <ClipboardDocumentCheckIcon className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                  className="w-full pl-10 pr-4 py-2 bg-gray-800/30 border border-gray-700/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors text-sm"
+                  placeholder="Confirm your password"
+                />
+              </div>
+            </div>
+
+            {/* Terms and Conditions */}
+            <div className="flex items-start">
+              <div className="flex items-center h-5">
+                <input
+                  type="checkbox"
+                  required
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
+              </div>
+              <div className="ml-3">
+                <label className="text-xs text-gray-400">
+                  I agree to the{' '}
+                  <a href="#" className="text-blue-400 hover:text-blue-300">
+                    Terms of Service
+                  </a>{' '}
+                  and{' '}
+                  <a href="#" className="text-blue-400 hover:text-blue-300">
+                    Privacy Policy
+                  </a>
+                </label>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 text-sm"
+            >
+              {isLoading ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <span>Creating Account...</span>
+                </>
+              ) : (
+                <span>Create Account</span>
+              )}
+            </button>
+
+            {/* Login Link */}
+            <div className="text-center">
+              <p className="text-gray-400 text-sm">
+                Already have an account?{' '}
+                <button
+                  type="button"
+                  onClick={() => navigate('/login')}
+                  className="text-blue-400 hover:text-blue-300"
+                >
+                  Sign in
+                </button>
+              </p>
+            </div>
+          </motion.form>
+        </div>
+      </motion.div>
+    </div>
   );
 };
 
