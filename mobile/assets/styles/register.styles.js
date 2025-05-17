@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   eyeIcon: { padding: 8 },
   button: {
     backgroundColor: '#5d3fd3',
-    borderRadius: 3,
+    borderRadius: 25,
     height: 50,
     justifyContent: "center",
     alignItems: "center",

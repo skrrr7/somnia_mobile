@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         overflow: 'hidden',
         position: 'relative',
-        boxShadow: '0px 0px 150px rgb(255, 255, 255)',
+        boxShadow: '0px 0px 150px rgb(1, 1, 1)',
     },
     backgroundLogo: {
         width: '100%',

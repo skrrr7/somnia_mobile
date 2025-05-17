@@ -4,7 +4,7 @@ import styles from '../../assets/styles/authcontainer.styles'
 
 export default function AuthContainer({ children }) {
     return (
-        <View style={[styles.background, { backgroundColor: '#000' }]}> 
+        <LinearGradient colors={['#1a1a2e', '#23234b']} style={styles.background}>
             <KeyboardAvoidingView
                 style={{flex: 1}}
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -31,6 +31,6 @@ export default function AuthContainer({ children }) {
                     </View>
                 </View>
             </KeyboardAvoidingView>
-        </View>
+        </LinearGradient>
       );
 }
