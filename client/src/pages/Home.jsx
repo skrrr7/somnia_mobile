@@ -47,8 +47,6 @@ const BenefitCard = ({ icon: Icon, title, description }) => (
   </motion.div>
 );
 
-
-
 const Home = () => {
   const navigate = useNavigate();
 
@@ -77,6 +75,7 @@ const Home = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="pt-40 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
+          id="hero-section"
         >
           <div className="text-center">
             <motion.div
@@ -128,7 +127,7 @@ const Home = () => {
         </motion.section>
 
         {/* How It Works Section */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" id="how-it-works">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -169,7 +168,7 @@ const Home = () => {
         </section>
 
         {/* Benefits Section */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" id="why-choose">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -199,8 +198,6 @@ const Home = () => {
             />
           </div>
         </section>
-
-        
 
         <Footer />
       </div>

@@ -1,24 +1,51 @@
 import React, { useContext, Fragment } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import logo from '../assets/SOMNiA_LOGO.png';
 import { Menu, Transition, MenuItem } from '@headlessui/react';
 import {
-  ChartBarIcon,
-  ClockIcon,
+  HomeIcon,
+  InformationCircleIcon,
+  BuildingOfficeIcon,
   UserIcon,
   Cog6ToothIcon,
-  BookOpenIcon,
   EnvelopeIcon,
   ArrowRightStartOnRectangleIcon,
 } from '@heroicons/react/24/outline';
 
 const NavigationBar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { userData, isLoggedin, logout } = useContext(AppContext);
   axios.defaults.withCredentials = true;
+
+  const scrollToSection = (sectionId) => {
+    // If not on home page, navigate to home first
+    if (location.pathname !== '/') {
+      navigate('/');
+      // Wait for navigation to complete before scrolling
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }, 100);
+    } else {
+      // If already on home page, just scroll
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }
+  };
 
   const sendVerificationOtp = async () => {
     try {
@@ -164,7 +191,7 @@ const NavigationBar = () => {
         <div className="flex justify-between items-center h-full">
           {/* Logo and Brand */}
           <button 
-            onClick={() => navigate('/')}
+            onClick={() => scrollToSection('hero-section')}
             className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
           >
             <img src={logo} alt="SOMNiA" className="h-10 w-10" />
@@ -174,23 +201,25 @@ const NavigationBar = () => {
           {/* Center Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <button 
-              onClick={() => navigate('/dashboard')}
+              onClick={() => scrollToSection('hero-section')}
               className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors text-sm"
             >
-              <ChartBarIcon className="w-5 h-5" />
-              <span>Analytics</span>
+              <HomeIcon className="w-5 h-5" />
+              <span>Home</span>
             </button>
             <button 
+              onClick={() => scrollToSection('how-it-works')}
               className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors text-sm"
             >
-              <ClockIcon className="w-5 h-5" />
-              <span>Sleep Tracking</span>
+              <InformationCircleIcon className="w-5 h-5" />
+              <span>About</span>
             </button>
             <button 
+              onClick={() => scrollToSection('why-choose')}
               className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors text-sm"
             >
-              <BookOpenIcon className="w-5 h-5" />
-              <span>Resources</span>
+              <BuildingOfficeIcon className="w-5 h-5" />
+              <span>Services</span>
             </button>
           </div>
 
