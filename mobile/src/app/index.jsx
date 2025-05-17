@@ -1,15 +1,20 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
+// This is a temporary component.
+const Value = ({ label, value }) => (
+    <View style={{ marginBottom: 8 }}>
+      <Text>{label}</Text>
+      <Text>{value}</Text>
+    </View>
+  );
+
 const Home = () => {
   return (
     <View>
-    
-      <Text>Steps Count</Text>
-      <Text>0</Text>
-
-      <Text>{"\n"}Latest Heart Rate</Text>
-      <Text>0 bmp</Text>
+        <Text>This values are static</Text>
+      <Value label="Steps Count" value={0} />
+      <Value label="Latest Resting Heart Rate" value={"90 bpm"} />
     </View>
   )
 }
