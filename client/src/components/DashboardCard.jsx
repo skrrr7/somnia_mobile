@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AppContext } from '../context/AppContext';
 import { motion } from 'framer-motion';
 import {
   HeartIcon,
@@ -6,6 +7,7 @@ import {
   ChartBarIcon,
   BeakerIcon,
 } from '@heroicons/react/24/outline';
+
 
 const getGreeting = () => {
   const hour = new Date().getHours();
@@ -37,7 +39,8 @@ const QuickAction = ({ icon: Icon, label, value, onClick, isActive = false }) =>
   </motion.button>
 );
 
-const DashboardCard = ({ onActionClick, doctorName = "Dr. John", activeView = 'overview' }) => {
+const DashboardCard = ({ onActionClick, activeView = 'health' }) => {
+  const { userData } = useContext(AppContext);
   const quickActions = [
     {
       icon: HeartIcon,
@@ -76,11 +79,10 @@ const DashboardCard = ({ onActionClick, doctorName = "Dr. John", activeView = 'o
         <div className="flex items-start justify-between">
           <div>
             <h2 className="text-2xl text-white font-light mb-2">
-              {getGreeting()}, {doctorName}
+              {getGreeting()}, {userData.name}
             </h2>
             <p className="text-gray-400">
-              Welcome to your medical dashboard. Here's your patient overview for today.
-            </p>
+            Your daily health insights are ready. Let's take a moment to see how you're progressing today.            </p>
           </div>
           <div className="flex items-center space-x-2 bg-green-500/10 px-3 py-1.5 rounded-full">
             <div className="w-2 h-2 rounded-full bg-green-500" />

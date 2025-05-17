@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import Sidebar from '../components/Sidebar';
+import Sidebar from '../components/sidebar.jsx';
 import DashboardCard from '../components/DashboardCard';
 import {
   HeartIcon,
@@ -11,7 +11,7 @@ import {
   ArrowTrendingDownIcon,
   BeakerIcon,
   ExclamationTriangleIcon,
-} from '@heroicons/react/24/outline';
+} from '@heroicons/react/24/outline';         
 
 const StatCard = ({ icon: Icon, title, value, trend, trendValue, trendLabel }) => (
   <motion.div
@@ -211,8 +211,7 @@ const RiskLevelIndicator = ({ percentage }) => {
 };
 
 const Dashboard = () => {
-  const [activeView, setActiveView] = useState('overview');
-  const doctorName = "Dr. Sarah Chen";
+  const [activeView, setActiveView] = useState('health ');
 
   const handleQuickAction = (action) => {
     setActiveView(action);
@@ -318,7 +317,6 @@ const Dashboard = () => {
           <div className="mb-8">
             <DashboardCard 
               onActionClick={handleQuickAction} 
-              doctorName={doctorName}
               activeView={activeView}
             />
           </div>

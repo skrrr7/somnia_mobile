@@ -6,8 +6,6 @@ import Footer from '../components/Footer';
 import {
   ChartBarIcon,
   BoltIcon,
-  MoonIcon,
-  ClockIcon,
   ShieldCheckIcon,
   DevicePhoneMobileIcon,
   LightBulbIcon,
@@ -49,37 +47,7 @@ const BenefitCard = ({ icon: Icon, title, description }) => (
   </motion.div>
 );
 
-const Testimonial = ({ quote, author, role }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    className="bg-gray-900/60 rounded-2xl p-8 border border-gray-800"
-  >
-    <div className="mb-6">
-      <svg className="w-8 h-8 text-blue-400 opacity-50" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-      </svg>
-    </div>
-    <p className="text-gray-300 mb-6 text-lg italic">{quote}</p>
-    <div>
-      <div className="text-white font-medium">{author}</div>
-      <div className="text-gray-400 text-sm">{role}</div>
-    </div>
-  </motion.div>
-);
 
-const StatCard = ({ number, label }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    className="text-center bg-gray-900/80 rounded-2xl p-8 border border-gray-800 hover:bg-gray-900/90 transition-all duration-300"
-  >
-    <div className="text-4xl font-light text-blue-400 mb-2">{number}</div>
-    <div className="text-gray-300 text-sm font-light">{label}</div>
-  </motion.div>
-);
 
 const Home = () => {
   const navigate = useNavigate();

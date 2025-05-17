@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
@@ -13,12 +13,10 @@ export const AppContextProvider = (props) => {
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Function to check auth and get user data - only called when needed
   const checkAuthAndGetUserData = async (showErrors = true) => {
     try {
       setIsLoading(true);
       
-      // Check if the user is authenticated
       const { data: authData } = await axios.get(
         `${backendUrl}/api/auth/is-auth`,
         { withCredentials: true }
@@ -27,10 +25,9 @@ export const AppContextProvider = (props) => {
       if (!authData.success) {
         setIsLoggedin(false);
         setUserData(null);
-        return;
+        return false;
       }
 
-      // If authenticated, get user data
       const { data: userResponse } = await axios.get(
         `${backendUrl}/api/user/data`,
         { withCredentials: true }
@@ -39,12 +36,14 @@ export const AppContextProvider = (props) => {
       if (userResponse.success) {
         setIsLoggedin(true);
         setUserData(userResponse.userData);
+        return true;
       } else {
         setIsLoggedin(false);
         setUserData(null);
         if (showErrors) {
           toast.error('Failed to get user data');
         }
+        return false;
       }
     } catch (error) {
       setIsLoggedin(false);
@@ -53,15 +52,31 @@ export const AppContextProvider = (props) => {
       if (showErrors && error.response?.status !== 401) {
         toast.error(error.response?.data?.message || 'Authentication check failed');
       }
+      return false;
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Clear user session
-  const clearUserSession = () => {
-    setIsLoggedin(false);
-    setUserData(null);
+  const logout = async () => {
+    try {
+      const { data } = await axios.post(`${backendUrl}/api/auth/logout`, {}, { 
+        withCredentials: true 
+      });
+      
+      if (data.success) {
+        setIsLoggedin(false);
+        setUserData(null);
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.replace('/');
+        return true;
+      }
+      return false;
+    } catch (error) {
+      toast.error('Logout failed');
+      return false;
+    }
   };
 
   const value = {
@@ -72,7 +87,7 @@ export const AppContextProvider = (props) => {
     setUserData,
     isLoading,
     checkAuthAndGetUserData,
-    clearUserSession
+    logout
   };
 
   return (

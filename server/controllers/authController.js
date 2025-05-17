@@ -106,23 +106,19 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
-
-        /*
-        res.clearCookie('token', {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'None'
-        });
-        */
-       
+        // Clear the token cookie with all necessary options
         res.clearCookie('token', {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Strict',
+            path: '/',
+            expires: new Date(0)
         });
+
+        // Force clear session
+        req.session = null;
         
         return res.status(200).json({ success: true, message: 'Logged Out!' });
-
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
     }

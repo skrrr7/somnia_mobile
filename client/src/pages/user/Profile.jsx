@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { motion } from 'framer-motion';
+import { AppContext } from '../../context/AppContext';
 import {
   UserCircleIcon,
   BellIcon,
@@ -9,17 +10,13 @@ import {
 } from '@heroicons/react/24/outline';
 
 const Profile = () => {
-  const [userData, setUserData] = useState({
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    age: 28,
-    weight: '70 kg',
-    height: '175 cm',
+  const { userData } = useContext(AppContext);
+  const [userSleepData] = useState({
     sleepGoal: '8 hours',
     bedtime: '22:00',
-    wakeTime: '06:00',
+    age: 28,
+    weight: '70 kg'
   });
-
   const [isEditing, setIsEditing] = useState(false);
 
   const StatCard = ({ icon: Icon, title, value }) => (
@@ -70,10 +67,10 @@ const Profile = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <StatCard icon={MoonIcon} title="Sleep Goal" value={userData.sleepGoal} />
-            <StatCard icon={BellIcon} title="Bedtime" value={userData.bedtime} />
-            <StatCard icon={HeartIcon} title="Age" value={userData.age} />
-            <StatCard icon={ScaleIcon} title="Weight" value={userData.weight} />
+            <StatCard icon={MoonIcon} title="Sleep Goal" value={userSleepData.sleepGoal} />
+            <StatCard icon={BellIcon} title="Bedtime" value={userSleepData.bedtime} />
+            <StatCard icon={HeartIcon} title="Age" value={userSleepData.age} />
+            <StatCard icon={ScaleIcon} title="Weight" value={userSleepData.weight} />
           </div>
         </div>
 

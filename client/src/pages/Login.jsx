@@ -17,12 +17,25 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    rememberMe: false
   });
+
+  const handleChange = (e) => {
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    setFormData({ ...formData, [e.target.name]: value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setIsLoading(true);
+      
+      if (formData.rememberMe) {
+        localStorage.setItem('rememberedEmail', formData.email);
+      } else {
+        localStorage.removeItem('rememberedEmail');
+      }
+
       const { data } = await axios.post(
         `${backendUrl}/api/auth/login`,
         formData,
@@ -44,9 +57,16 @@ const Login = () => {
     }
   };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  React.useEffect(() => {
+    const rememberedEmail = localStorage.getItem('rememberedEmail');
+    if (rememberedEmail) {
+      setFormData(prev => ({
+        ...prev,
+        email: rememberedEmail,
+        rememberMe: true
+      }));
+    }
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0A1628]">
@@ -147,6 +167,9 @@ const Login = () => {
               <div className="flex items-center">
                 <input
                   type="checkbox"
+                  name="rememberMe"
+                  checked={formData.rememberMe}
+                  onChange={handleChange}
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label className="ml-2 block text-gray-400">

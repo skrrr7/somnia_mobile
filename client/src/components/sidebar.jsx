@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   HomeIcon,
@@ -11,10 +11,12 @@ import {
   ChevronDoubleRightIcon,
   ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/outline';
+import { AppContext } from '../context/AppContext';
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout } = useContext(AppContext);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const navigationItems = [
@@ -69,9 +71,8 @@ const Sidebar = () => {
     </button>
   );
 
-  const handleLogout = () => {
-    // Add logout logic here
-    navigate('/login');
+  const handleLogout = async () => {
+    await logout();
   };
 
   return (

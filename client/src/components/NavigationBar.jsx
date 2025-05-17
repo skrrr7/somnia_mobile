@@ -4,18 +4,20 @@ import { AppContext } from '../context/AppContext';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import logo from '../assets/SOMNiA_LOGO.png';
-import { Menu, Transition } from '@headlessui/react';
+import { Menu, Transition, MenuItem } from '@headlessui/react';
 import {
   ChartBarIcon,
   ClockIcon,
   UserIcon,
   Cog6ToothIcon,
   BookOpenIcon,
+  EnvelopeIcon,
+  ArrowRightStartOnRectangleIcon,
 } from '@heroicons/react/24/outline';
 
 const NavigationBar = () => {
   const navigate = useNavigate();
-  const { userData, backendUrl, setUserData, setIsLoggedin } = useContext(AppContext);
+  const { userData, isLoggedin, logout } = useContext(AppContext);
   axios.defaults.withCredentials = true;
 
   const sendVerificationOtp = async () => {
@@ -33,20 +35,127 @@ const NavigationBar = () => {
     }
   };
 
-  const logout = async () => {
-    try {
-      const { data } = await axios.post(`${backendUrl}/api/auth/logout`);
-      if (data.success) {
-        setIsLoggedin(false);
-        setUserData(null);
-        navigate('/');
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.error('Logout Error:', error);
-      toast.error(error.message);
+  const handleLogout = async () => {
+    await logout();
+  };
+
+  // Render auth buttons when not logged in
+  const renderAuthButtons = () => {
+    if (isLoggedin) {
+      return null;
     }
+
+    return (
+      <div className="flex items-center space-x-4">
+        <button
+          onClick={() => navigate('/login')}
+          className="text-white hover:text-blue-400 transition-colors text-sm"
+        >
+          Sign In
+        </button>
+        <button
+          onClick={() => navigate('/register')}
+          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition-colors"
+        >
+          Sign Up
+        </button>
+      </div>
+    );
+  };
+
+  // Only render user menu if actually logged in
+  const renderUserMenu = () => {
+    if (!isLoggedin || !userData) {
+      return null;
+    }
+
+    return (
+      <Menu as="div" className="relative">
+        <Menu.Button className="flex items-center space-x-3 text-white hover:text-gray-200 transition-colors">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-600 to-blue-400 flex items-center justify-center text-sm">
+            {userData.name?.charAt(0)}
+          </div>
+          <span className="text-sm">{userData.name}</span>
+        </Menu.Button>
+
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
+        >
+          <Menu.Items className="absolute right-0 mt-2 w-56 rounded-lg bg-gray-900/90 backdrop-blur-xl shadow-lg ring-1 ring-gray-800/50 divide-y divide-gray-800/50">
+            <div className="px-4 py-3">
+              <p className="text-sm text-gray-400">Signed in as</p>
+              <p className="text-sm text-white truncate">{userData.email}</p>
+            </div>
+
+            <div className="py-1">
+              {!userData.isAccountVerified && (
+                <MenuItem>
+                  {({ isActive }) => (
+                    <button
+                      onClick={sendVerificationOtp}
+                      className={`${
+                        isActive ? 'bg-gray-800/50' : ''
+                      } flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-300 text-left`}
+                    >
+                      <EnvelopeIcon className="w-4 h-4" />
+                      <span>Verify Email</span>
+                    </button>
+                  )}
+                </MenuItem>
+              )}
+              
+              <MenuItem>
+                {({ isActive }) => (
+                  <button
+                    onClick={() => navigate('/profile')}
+                    className={`${
+                      isActive ? 'bg-gray-800/50' : ''
+                    } flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-300 text-left`}
+                  >
+                    <UserIcon className="w-4 h-4" />
+                    <span>Profile</span>
+                  </button>
+                )}
+              </MenuItem>
+
+              <MenuItem>
+                {({ isActive }) => (
+                  <button
+                    onClick={() => navigate('/settings')}
+                    className={`${
+                      isActive ? 'bg-gray-800/50' : ''
+                    } flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-300 text-left`}
+                  >
+                    <Cog6ToothIcon className="w-4 h-4" />
+                    <span>Settings</span>
+                  </button>
+                )}
+              </MenuItem>
+
+              <MenuItem>
+                {({ isActive }) => (
+                  <button
+                    onClick={handleLogout}
+                    className={`${
+                      isActive ? 'bg-gray-800/50' : ''
+                    } flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-300 text-left`}
+                  >
+                    <ArrowRightStartOnRectangleIcon className="w-4 h-4" />
+                    <span>Sign out</span>
+                  </button>
+                )}
+              </MenuItem>
+            </div>
+          </Menu.Items>
+        </Transition>
+      </Menu>
+    );
   };
 
   return (
@@ -87,94 +196,8 @@ const NavigationBar = () => {
 
           {/* Right Side Actions */}
           <div className="flex items-center space-x-6">
-            {userData ? (
-              <Menu as="div" className="relative">
-                <Menu.Button className="flex items-center space-x-3 text-white hover:text-gray-200 transition-colors">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-600 to-blue-400 flex items-center justify-center text-sm">
-                    {userData.name.charAt(0)}
-                  </div>
-                  <span className="text-sm">{userData.name}</span>
-                </Menu.Button>
-
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95"
-                >
-                  <Menu.Items className="absolute right-0 mt-2 w-56 rounded-lg bg-gray-900/90 backdrop-blur-xl shadow-lg ring-1 ring-gray-800/50 divide-y divide-gray-800/50">
-                    <div className="px-4 py-3">
-                      <p className="text-sm text-gray-400">Signed in as</p>
-                      <p className="text-sm text-white truncate">{userData.email}</p>
-                    </div>
-
-                    <div className="py-1">
-                      {!userData.isAccountVerified && (
-                        <Menu.Item>
-                          {({ active }) => (
-                            <button
-                              onClick={sendVerificationOtp}
-                              className={`${
-                                active ? 'bg-gray-800/50' : ''
-                              } flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-300 text-left`}
-                            >
-                              <UserIcon className="w-4 h-4" />
-                              <span>Verify Email</span>
-                            </button>
-                          )}
-                        </Menu.Item>
-                      )}
-                      
-                      <Menu.Item>
-                        {({ active }) => (
-                          <button
-                            onClick={() => navigate('/reset-password')}
-                            className={`${
-                              active ? 'bg-gray-800/50' : ''
-                            } flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-300 text-left`}
-                          >
-                            <Cog6ToothIcon className="w-4 h-4" />
-                            <span>Settings</span>
-                          </button>
-                        )}
-                      </Menu.Item>
-
-                      <Menu.Item>
-                        {({ active }) => (
-                          <button
-                            onClick={logout}
-                            className={`${
-                              active ? 'bg-gray-800/50' : ''
-                            } flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-300 text-left`}
-                          >
-                            <UserIcon className="w-4 h-4" />
-                            <span>Sign out</span>
-                          </button>
-                        )}
-                      </Menu.Item>
-                    </div>
-                  </Menu.Items>
-                </Transition>
-              </Menu>
-            ) : (
-              <div className="flex items-center space-x-4">
-                <button
-                  className="text-gray-300 hover:text-white transition-colors text-sm"
-                  onClick={() => navigate('/register')}
-                >
-                  Sign Up
-                </button>
-                <button
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors text-white text-sm"
-                  onClick={() => navigate('/login')}
-                >
-                  Sign In
-                </button>
-              </div>
-            )}
+            {renderAuthButtons()}
+            {renderUserMenu()}
           </div>
         </div>
       </div>

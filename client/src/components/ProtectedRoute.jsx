@@ -1,19 +1,13 @@
-import React, { useContext, useEffect } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 
 const ProtectedRoute = ({ children }) => {
-  const { isLoggedin, checkAuthAndGetUserData } = useContext(AppContext);
-  const location = useLocation();
+  const { isLoggedin } = useContext(AppContext);
 
-  useEffect(() => {
-    if (!isLoggedin) {
-      checkAuthAndGetUserData(false);
-    }
-  }, []);
-
+  // Simple redirect if not logged in
   if (!isLoggedin) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/" replace />;
   }
 
   return children;
