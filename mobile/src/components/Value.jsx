@@ -4,8 +4,8 @@ import React from 'react'
 // This is a temporary component.
 const Value = ({ label, value }) => (
     <View style={{ marginBottom: 8 }}>
-        <Text>{label}</Text>
-        <Text>{value}</Text>
+        <Text style={{ color: 'white' }}>{label}</Text>
+        <Text style={{ color: 'white' }}>{value}</Text>
     </View>
 );
 

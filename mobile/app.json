@@ -14,20 +14,41 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.belleza.mobile"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.belleza.mobile"
     },
     "web": {
       "favicon": "src/assets/favicon.png"
     },
     "plugins": [
-      "expo-router"
-    ]
+      "expo-router",
+      "react-native-health-connect",
+      "expo-build-properties",
+      "expo-health-connect",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "minSdkVersion": 26
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "62a57f69-8c69-4dcf-a9ff-f1cdd8c71c93"
+      }
+    }
   }
 }
