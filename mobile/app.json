@@ -1,8 +1,8 @@
 {
   "expo": {
     "scheme": "somnia",
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "somnia",
+    "slug": "somnia",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "src/assets/icon.png",
@@ -23,7 +23,11 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.belleza.mobile"
+      "package": "com.belleza.mobile",
+      "permissions": [
+        "android.permission.health.READ_STEPS",
+        "android.permission.health.READ_HEART_RATE"
+      ]
     },
     "web": {
       "favicon": "src/assets/favicon.png"
