@@ -1,7 +1,7 @@
 {
   "expo": {
     "scheme": "somnia",
-    "name": "somnia",
+    "name": "SOMNiA",
     "slug": "somnia",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -25,8 +25,12 @@
       "edgeToEdgeEnabled": true,
       "package": "com.belleza.mobile",
       "permissions": [
-        "android.permission.health.READ_STEPS",
-        "android.permission.health.READ_HEART_RATE"
+        "android.permission.health.READ_BLOOD_PRESSURE",
+        "android.permission.health.READ_EXERCISE",
+        "android.permission.health.READ_HEART_RATE",
+        "android.permission.health.READ_RESTING_HEART_RATE",
+        "android.permission.health.READ_SLEEP",
+        "android.permission.health.READ_STEPS"
       ]
     },
     "web": {
@@ -49,10 +53,7 @@
       ]
     ],
     "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "62a57f69-8c69-4dcf-a9ff-f1cdd8c71c93"
-      }
+      "router": {}
     }
   }
 }
