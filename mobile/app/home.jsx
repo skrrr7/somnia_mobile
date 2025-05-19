@@ -1,5 +1,4 @@
 import { View, Text, TouchableOpacity, ScrollView, Image, Dimensions } from 'react-native';
-import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import styles from '../assets/styles/home.styles.js';
@@ -9,7 +8,6 @@ import Diary from './diary';
 import SleepReco from './sleepReco';
 
 export default function Home() {
-  const router = useRouter();
   const [selectedTab, setSelectedTab] = useState('home');
 
   // Example sleep data for the past 7 days
