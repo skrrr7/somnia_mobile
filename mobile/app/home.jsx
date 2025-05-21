@@ -9,7 +9,7 @@ import SleepReco from './sleepReco';
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState('home');
-
+ve
   // Example sleep data for the past 7 days
   const sleepData = {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
