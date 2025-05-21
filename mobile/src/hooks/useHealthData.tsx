@@ -2,21 +2,21 @@ import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import { initialize, requestPermission, readRecords } from 'react-native-health-connect';
 import { TimeRangeFilter } from 'react-native-health-connect/lib/typescript/types/base.types';
+import { RecordResult } from 'react-native-health-connect';
 
 const useHealthData = (date: Date) => {
   const [hasPermissions, setHasPermission] = useState(false);
+  const [bloodPressure, setBloodPressure] = useState(0);
+  const [exercise, setExercise] = useState(0);
+  const [heartRate, setHeartRate] = useState(0);
+  const [restingHeartRate, setRestingHeartRate] = useState(0);
+  const [sleep, setSleep] = useState<RecordResult<'SleepSession'>[]>([]);
   const [steps, setSteps] = useState(0);
 
-  // Android - Health Connect
-  const readSampleData = async () => {
-    // initialize the client
+  const readHealthData = async () => {
+    // Initialize health connect client
     const isInitialized = await initialize();
     if (!isInitialized) { return; }
-
-    // request permissions
-    await requestPermission([
-      { accessType: 'read', recordType: 'Steps' },
-    ]);
 
     const timeRangeFilter: TimeRangeFilter = {
       operator: 'between',
@@ -24,9 +24,29 @@ const useHealthData = (date: Date) => {
       endTime: new Date(date.setHours(23, 59, 59, 999)).toISOString(),
     };
 
-    // Steps
+    // request permissions
+    // Todo: ask user to set all permission otherwise add fallback
+    await requestPermission([
+      { accessType: 'read', recordType: 'BloodPressure' },
+      { accessType: 'read', recordType: 'ExerciseSession' },
+      { accessType: 'read', recordType: 'HeartRate' },
+      { accessType: 'read', recordType: 'RestingHeartRate' },
+      { accessType: 'read', recordType: 'SleepSession' },
+      { accessType: 'read', recordType: 'Steps' }
+    ]);
+
+    // Get todays data
+    const bloodPressureResult = await readRecords('BloodPressure', { timeRangeFilter });
+    const exerciseResult = await readRecords('ExerciseSession', { timeRangeFilter });
+    const heartRateResult = await readRecords('HeartRate', { timeRangeFilter });
+    const restHeartRateResult = await readRecords('RestingHeartRate', { timeRangeFilter });
+    const sleepResult = await readRecords('SleepSession', { timeRangeFilter });
     const stepsResult = await readRecords('Steps', { timeRangeFilter });
-    console.log("Steps Result:", stepsResult); // Important: Inspect this object
+
+    // Sleep
+    setSleep(sleepResult.records);
+
+    // Steps
     const totalSteps = stepsResult.records.reduce((sum, cur) => sum + cur.count, 0); // Access the records array
     setSteps(totalSteps);
   };
@@ -35,10 +55,10 @@ const useHealthData = (date: Date) => {
     if (Platform.OS !== 'android') {
       return;
     }
-    readSampleData();
+    readHealthData();
   }, [date]);
 
-  return { steps };
+  return { bloodPressure, exercise, heartRate, restingHeartRate, sleep, steps };
 };
 
-export default useHealthData;
+export default useHealthData; 
