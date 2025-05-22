@@ -32,18 +32,18 @@ const Home = () => {
         throw new Error('CLIENT_NOT_INITIALIZED');
       }
 
-      const bloodPressure = await readBloodPressure();
-      const exerciseSession = await readExerciseSession();
-      const heartRate = await readHeartRate();
-      const restingHeartRate = await readRestingHeartRate();
-      const sleep = await readSleepSession();
+      // const bloodPressure = await readBloodPressure();
+      // const exerciseSession = await readExerciseSession();
+      // const heartRate = await readHeartRate();
+      // const restingHeartRate = await readRestingHeartRate();
+      // const sleep = await readSleepSession();
       const steps = await readSteps();
 
-      setBpCount(bloodPressure.length);
-      setExerSession(exerciseSession.length);
-      setheartRate(heartRate.length);
-      setrestingHeartRate(restingHeartRate.length);
-      setSleepCount(sleep.length);
+      // setBpCount(bloodPressure.length);
+      // setExerSession(exerciseSession.length);
+      // setheartRate(heartRate.length);
+      // setrestingHeartRate(restingHeartRate.length);
+      // setSleepCount(sleep.length);
       setSteps(steps.length);
     };
 
