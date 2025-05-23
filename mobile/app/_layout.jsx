@@ -1,20 +1,30 @@
-import { Stack } from "expo-router";
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import SafeScreen from "../components/SafeScreen";
-import { StatusBar } from "expo-status-bar";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+const Stack = createStackNavigator();
 
 export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <SafeScreen>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" />
-          <Stack.Screen name="(auth)" />
-        </Stack>
+        <NavigationContainer>
+          <StatusBar barStyle="light-content" />
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="index" />
+            <Stack.Screen name="(auth)" />
+          </Stack.Navigator>
+        </NavigationContainer>
       </SafeScreen>
-      <StatusBar style="dark" />
       <ToastContainer
         position="top-right"
         autoClose={5000}

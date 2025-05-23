@@ -1,12 +1,12 @@
 import { View, Text, Image, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useState } from 'react'
 import axios from 'axios';
-import { toast } from 'react-toastify';
-import { useRouter, Link } from 'expo-router'
-import { useFonts } from 'expo-font';
-import { Ionicons} from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
+import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from 'react-native-vector-icons/Ionicons';
 import AuthContainer from './authcontainer';
 import styles from '../../assets/styles/login.styles';
+import { VITE_BACKEND_URL } from '@env';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -14,18 +14,10 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const router = useRouter();
-
-  const [fontsLoaded] = useFonts({
-    'RussoOne': require('../../assets/fonts/RussoOne-Regular.ttf'),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
+  const navigation = useNavigation();
 
   // Use localhost for web development
-  const backendUrl = 'http://localhost:4000';
+  const backendUrl = VITE_BACKEND_URL;
 
   const handleLogin = async () => {
     setIsLoading(true);
@@ -47,14 +39,23 @@ export default function Login() {
 
       // Handle successful login
       if (response.data.success) {
-        toast.success('Login successful!');
-        router.replace('/home'); // Changed from push to replace to prevent going back to login
+        Toast.show({
+          type: 'success',
+          text1: 'Login successful!'
+        });
+        navigation.replace('Home'); // Changed from router.replace to navigation.replace
       } else {
-        toast.error('Login failed. Please try again.');
+        Toast.show({
+          type: 'error',
+          text1: 'Login failed. Please try again.'
+        });
       }
     } catch (error) {
       console.error('Error during login:', error);
-      toast.error(error.response?.data?.message || 'An error occurred. Please try again later.');
+      Toast.show({
+        type: 'error',
+        text1: error.response?.data?.message || 'An error occurred. Please try again later.'
+      });
     } finally {
       setIsLoading(false);
     }
@@ -62,77 +63,55 @@ export default function Login() {
   
   return (
     <AuthContainer>
-        {/* Login Label */}
-        <View style={styles.formContainer}>
-          <View style={styles.loginLabel}>
-            <Image 
-              source={require('../../assets/images/login.png')}
-              resizeMode='contain' 
-              style={styles.login} />
-          </View>
+      <View style={styles.container}>
+        <Text style={styles.title}>Welcome Back!</Text>
+        <Text style={styles.subtitle}>Sign in to continue</Text>
 
-          {/* Email */}
-          <Text style={styles.label}>Email</Text>
-          <View style={styles.inputContainer}>
-            <Ionicons
-              name='mail-outline'
-              size={20}
-              style={styles.inputIcon}>
-            </Ionicons>
-            <TextInput 
-              placeholder='Enter your email' 
-              placeholderTextColor={'#787878'}
-              value={email}
-              onChangeText={setEmail}
-              keyboardType='email-address'
-              autoCapitalize='none'
-              style={styles.input}/>
-          </View>
-
-          {/* Password */}
-          <Text style={styles.label}>Password</Text>
-          <View style={styles.inputContainer}>
-            <Ionicons
-              name='lock-closed-outline'
-              size={20}
-              style={styles.inputIcon}>
-            </Ionicons>
-            <TextInput 
-              placeholder='Enter your password' 
-              placeholderTextColor={'#787878'}
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={!showPassword}
-              style={styles.input} />
-            <TouchableOpacity
-              onPress={() => setShowPassword(!showPassword)} 
-              style={styles.eyeIcon}>
-                <Ionicons 
-                  name={showPassword ? "eye-outline" : "eye-off-outline"}
-                  size={20} />
-            </TouchableOpacity>
-          </View>
-          {/* Login Button */}
-          <TouchableOpacity
-            onPress={handleLogin}
-            disabled={isLoading}
-            style={styles.button} >
-              {isLoading ? (<ActivityIndicator color='#ffffff' />) : (<Text style={styles.buttonText}>Login</Text>)}
-          </TouchableOpacity>
-
-          <View style={styles.bottomLine} />
-
-          {/* Footer */}
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>Don't have an account?</Text>
-            
-            <Link href="/register" asChild>
-              <TouchableOpacity>
-                <Text style={styles.link}>Register</Text>
-              </TouchableOpacity>
-            </Link>
-          </View>
+        <View style={styles.inputContainer}>
+          <Ionicons name="mail-outline" size={20} color="#666" style={styles.inputIcon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
         </View>
+
+        <View style={styles.inputContainer}>
+          <Ionicons name="lock-closed-outline" size={20} color="#666" style={styles.inputIcon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+          />
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)} 
+            style={styles.eyeIcon}>
+              <Ionicons 
+                name={showPassword ? "eye-outline" : "eye-off-outline"}
+                size={20} />
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity style={styles.forgotPassword}>
+          <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <Text style={styles.loginButtonText}>Login</Text>
+        </TouchableOpacity>
+
+        <View style={styles.registerContainer}>
+          <Text style={styles.registerText}>Don't have an account? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+            <Text style={styles.registerLink}>Register</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </AuthContainer>
   );
 }

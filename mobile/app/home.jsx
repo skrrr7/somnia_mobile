@@ -1,15 +1,17 @@
 import { View, Text, TouchableOpacity, ScrollView, Image, Dimensions } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useState } from 'react';
 import styles from '../assets/styles/home.styles.js';
-import { LinearGradient } from 'expo-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient';
 import { LineChart } from 'react-native-chart-kit';
 import Diary from './diary';
 import SleepReco from './sleepReco';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState('home');
-ve
+  const navigation = useNavigation();
+
   // Example sleep data for the past 7 days
   const sleepData = {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -45,7 +47,7 @@ ve
         </View>
         <TouchableOpacity 
           style={styles.profileButton}
-          onPress={() => setSelectedTab('profile')}>
+          onPress={() => navigation.navigate('Profile')}>
           <Ionicons name="person-circle-outline" size={32} color="#fff" />
         </TouchableOpacity>
       </View>
@@ -139,7 +141,7 @@ ve
           </TouchableOpacity>
           <TouchableOpacity 
             style={styles.navItem}
-            onPress={() => setSelectedTab('profile')}
+            onPress={() => navigation.navigate('Profile')}
             activeOpacity={0.7}
           >
             <Ionicons 

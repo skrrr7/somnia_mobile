@@ -1,12 +1,12 @@
 import { View, Text, Image, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useState } from 'react'
 import axios from 'axios';
-import { toast } from 'react-toastify'; 
-import { useRouter } from 'expo-router'
-import { useFonts } from 'expo-font';
-import { Ionicons} from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
+import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from 'react-native-vector-icons/Ionicons';
 import AuthContainer from './authcontainer';
 import styles from '../../assets/styles/register.styles';
+import { VITE_BACKEND_URL } from '@env';
 
 export default function Register() {
   const [email, setEmail] = useState('');
@@ -17,23 +17,18 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const router = useRouter();
-
-  const [fontsLoaded] = useFonts({
-    'RussoOne': require('../../assets/fonts/RussoOne-Regular.ttf'),
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
+  const navigation = useNavigation();
 
   // Use localhost for web development
-  const backendUrl = 'http://localhost:4000';
+  const backendUrl = VITE_BACKEND_URL;
 
   const handleRegister = async () => {
     // Validation
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match!');
+      Toast.show({
+        type: 'error',
+        text1: 'Passwords do not match!'
+      });
       return;
     }
 
@@ -57,14 +52,23 @@ export default function Register() {
 
       // Handle successful registration
       if (response.data.success) {
-        toast.success('Account created successfully!');
-        router.back(); // Go back to login page
+        Toast.show({
+          type: 'success',
+          text1: 'Account created successfully!'
+        });
+        navigation.navigate('Home');
       } else {
-        toast.error('Registration failed. Please try again.');
+        Toast.show({
+          type: 'error',
+          text1: 'Registration failed. Please try again.'
+        });
       }
     } catch (error) {
       console.error('Error during registration:', error);
-      toast.error('An error occurred. Please try again later.');
+      Toast.show({
+        type: 'error',
+        text1: 'An error occurred. Please try again later.'
+      });
     } finally {
       setIsLoading(false);
     }
@@ -171,13 +175,12 @@ export default function Register() {
             {isLoading ? (<ActivityIndicator color='#ffffff' />) : (<Text style={styles.buttonText}>Create Account</Text>)}
         </TouchableOpacity>
 
-
         <View style={styles.bottomLine} />
 
         {/* Footer */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>Already have an account?</Text>
-          <TouchableOpacity onPress={() => router.back()}>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <Text style={styles.link}>Login</Text>
           </TouchableOpacity>
         </View>

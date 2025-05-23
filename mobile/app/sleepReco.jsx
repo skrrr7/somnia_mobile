@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from 'react-native-vector-icons';
 import styles from '../assets/styles/sleepReco.styles.js';
 
 export default function SleepReco() {

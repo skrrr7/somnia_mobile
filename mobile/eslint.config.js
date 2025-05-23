@@ -1,10 +1,8 @@
-// https://docs.expo.dev/guides/using-eslint/
-const { defineConfig } = require('eslint/config');
-const expoConfig = require('eslint-config-expo/flat');
-
-module.exports = defineConfig([
-  expoConfig,
-  {
-    ignores: ['dist/*'],
+// https://reactnative.dev/docs/typescript
+module.exports = {
+  extends: '@react-native',
+  root: true,
+  rules: {
+    'prettier/prettier': 0,
   },
-]);
+};

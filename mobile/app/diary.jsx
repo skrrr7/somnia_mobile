@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, ScrollView, Modal, Platform, TextInput } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, TouchableOpacity, ScrollView, Modal, Platform, TextInput, StyleSheet } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import styles from '../assets/styles/diary.styles.js';
@@ -96,15 +96,16 @@ export default function Diary() {
   };
 
   return (
-    <View style={styles.card}>
-      <Text style={styles.cardTitle}>Sleep Diary</Text>
-      <TouchableOpacity 
-        style={styles.addDiaryButton}
-        onPress={() => setShowDiaryModal(true)}
-      >
-        <Ionicons name="add-circle-outline" size={24} color="#fff" />
-        <Text style={styles.addDiaryButtonText}>Add New Entry</Text>
-      </TouchableOpacity>
+    <View style={styles.container}>
+      <Text style={styles.title}>Sleep Diary</Text>
+      <Text style={styles.subtitle}>Track your sleep patterns and habits</Text>
+
+      <View style={styles.entryContainer}>
+        <TouchableOpacity style={styles.addEntryButton}>
+          <Ionicons name="add-circle" size={24} color="#a259ff" />
+          <Text style={styles.addEntryText}>Add New Entry</Text>
+        </TouchableOpacity>
+      </View>
 
       {/* Display saved entries */}
       {diaryEntries.map((entry, index) => (
@@ -405,3 +406,140 @@ export default function Diary() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#1a1a2e',
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#ccc',
+    marginBottom: 30,
+  },
+  entryContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addEntryButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(162, 89, 255, 0.1)',
+    padding: 15,
+    borderRadius: 10,
+  },
+  addEntryText: {
+    color: '#a259ff',
+    fontSize: 16,
+    marginLeft: 10,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#1a1a2e',
+    padding: 20,
+    borderRadius: 20,
+    width: '80%',
+    maxHeight: '80%',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginRight: 10,
+  },
+  diaryForm: {
+    flex: 1,
+  },
+  formGroup: {
+    marginBottom: 20,
+  },
+  formLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 5,
+  },
+  timePickerButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    padding: 10,
+    borderRadius: 5,
+  },
+  timePickerText: {
+    fontSize: 16,
+    color: '#fff',
+  },
+  optionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  optionButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    padding: 10,
+    borderRadius: 5,
+  },
+  optionButtonSelected: {
+    backgroundColor: 'rgba(162, 89, 255, 0.2)',
+  },
+  optionText: {
+    fontSize: 16,
+    color: '#fff',
+  },
+  mealsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderWidth: 1,
+    borderColor: '#fff',
+    borderRadius: 5,
+    marginRight: 10,
+  },
+  checkboxSelected: {
+    backgroundColor: 'rgba(162, 89, 255, 0.2)',
+  },
+  checkboxLabel: {
+    fontSize: 16,
+    color: '#fff',
+  },
+  notesInput: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    padding: 10,
+    borderRadius: 5,
+    color: '#fff',
+  },
+  saveButton: {
+    backgroundColor: 'rgba(162, 89, 255, 0.8)',
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  saveButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+});

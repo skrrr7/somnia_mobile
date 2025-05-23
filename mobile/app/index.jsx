@@ -1,83 +1,81 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions, ScrollView, Pressable } from 'react-native';
-import { Link, useRouter } from 'expo-router';
-import { LinearGradient } from 'expo-linear-gradient';
-import { StatusBar } from 'expo-status-bar';
-import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
+import { StatusBar } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function LandingPage() {
-  const router = useRouter();
+  const navigation = useNavigation();
 
   return (
-    <View style={styles.container}>
-      <StatusBar style="light" />
-      <LinearGradient
-        colors={['#1a1a2e', '#23234b']}
-        style={styles.gradient}
-      >
-        <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-          {/* Main Content */}
-          <View style={styles.contentContainer}>
-            <Image
-              source={require('../assets/images/somnia.png')}
-              style={styles.logoOnly}
-              resizeMode="contain"
-            />
-            <Text style={styles.subtitle}>
-              Your personal sleep tracking and analysis companion. 
-              Discover better sleep patterns and improve your overall well-being.
+    <LinearGradient colors={['#1a1a2e', '#23234b']} style={styles.container}>
+      <StatusBar barStyle="light-content" />
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        {/* Main Content */}
+        <View style={styles.contentContainer}>
+          <Image
+            source={require('../assets/images/somnia.png')}
+            style={styles.logoOnly}
+            resizeMode="contain"
+          />
+          <Text style={styles.subtitle}>
+            Your personal sleep tracking and analysis companion. 
+            Discover better sleep patterns and improve your overall well-being.
+          </Text>
+        </View>
+
+        {/* Features Section */}
+        <View style={styles.featuresContainer}>
+          <View style={styles.featureCard}>
+            <Ionicons name="moon" size={22} color="#5d3fd3" style={styles.featureIcon} />
+            <Text style={styles.featureTitle}>Sleep Tracking</Text>
+            <Text style={styles.featureText}>
+              Monitor your sleep patterns and get detailed insights
             </Text>
           </View>
-
-          {/* Features Section */}
-          <View style={styles.featuresContainer}>
-            <View style={styles.featureCard}>
-              <Ionicons name="moon" size={22} color="#5d3fd3" style={styles.featureIcon} />
-              <Text style={styles.featureTitle}>Sleep Tracking</Text>
-              <Text style={styles.featureText}>
-                Monitor your sleep patterns and get detailed insights
-              </Text>
-            </View>
-            <View style={styles.featureCard}>
-              <Ionicons name="analytics" size={22} color="#5d3fd3" style={styles.featureIcon} />
-              <Text style={styles.featureTitle}>Smart Analysis</Text>
-              <Text style={styles.featureText}>
-                Get personalized recommendations for better sleep
-              </Text>
-            </View>
-            <View style={styles.featureCard}>
-              <Ionicons name="trending-up" size={22} color="#5d3fd3" style={styles.featureIcon} />
-              <Text style={styles.featureTitle}>Progress Tracking</Text>
-              <Text style={styles.featureText}>
-                Track your sleep improvement journey
-              </Text>
-            </View>
+          <View style={styles.featureCard}>
+            <Ionicons name="analytics" size={22} color="#5d3fd3" style={styles.featureIcon} />
+            <Text style={styles.featureTitle}>Smart Analysis</Text>
+            <Text style={styles.featureText}>
+              Get personalized recommendations for better sleep
+            </Text>
           </View>
-
-          {/* Buttons Container */}
-          <View style={styles.buttonContainer}>
-            <Pressable
-              style={({ pressed }) => [
-                styles.getStartedButton,
-                pressed && styles.getStartedButtonPressed,
-              ]}
-              onPress={() => router.push('/login')}
-            >
-              <Text style={styles.getStartedButtonText}>Get Started</Text>
-            </Pressable>
+          <View style={styles.featureCard}>
+            <Ionicons name="trending-up" size={22} color="#5d3fd3" style={styles.featureIcon} />
+            <Text style={styles.featureTitle}>Progress Tracking</Text>
+            <Text style={styles.featureText}>
+              Track your sleep improvement journey
+            </Text>
           </View>
-        </ScrollView>
-      </LinearGradient>
-    </View>
+        </View>
+
+        {/* Buttons Container */}
+        <View style={styles.buttonContainer}>
+          <Pressable
+            style={({ pressed }) => [
+              styles.getStartedButton,
+              pressed && styles.getStartedButtonPressed,
+            ]}
+            onPress={() => navigation.navigate('Login')}
+          >
+            <Text style={styles.getStartedButtonText}>Get Started</Text>
+          </Pressable>
+
+          <TouchableOpacity
+            style={[styles.getStartedButton, styles.registerButton]}
+            onPress={() => navigation.navigate('Register')}
+          >
+            <Text style={styles.getStartedButtonText}>Register</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  gradient: {
-    flex: 1,
-    padding: 20,
   },
   scrollContent: {
     paddingBottom: 40,
@@ -156,6 +154,11 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  registerButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#5d3fd3',
   },
   inlineHeading: {
     display: 'none',
