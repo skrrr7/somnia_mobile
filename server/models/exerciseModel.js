@@ -1,43 +1,20 @@
 import mongoose from 'mongoose';
 
 const exerciseSessionSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to the User model
-    required: true,
-    index: true, // Improves query performance when filtering by user
-  },
-  exerciseType: {
-    type: Number,
-    required: true,
-  },
-  lastModifiedTime: {
-    type: Date,
-    required: true,
-  },
-  id: {
-    type: String,
-    required: true,
-    unique: true, // Unique external ID (e.g., from Google Fit)
-  },
-  title: {
-    type: String,
-  },
-  startTime: {
-    type: Date,
-    required: true,
-  },
-  endTime: {
-    type: Date,
-    required: true,
-  }
+  user:              { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+  exerciseType:      { type: Number, required: true },
+  lastModifiedTime:  { type: Date, required: true },
+  id:                { type: String, required: true, unique: true },
+  title:             { type: String },
+  startTime:         { type: Date, required: true },
+  endTime:           { type: Date, required: true },
 }, {
   timestamps: true,
 });
 
 const ExerciseSession = mongoose.model('ExerciseSession', exerciseSessionSchema);
-
 export default ExerciseSession;
+
 
 // Sample data from Health Connect
 // {
