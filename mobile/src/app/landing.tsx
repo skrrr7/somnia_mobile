@@ -1,12 +1,16 @@
 import React from 'react';
-import { useRouter } from 'expo-router';
 import { View, Text, Pressable, ScrollView, StatusBar, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '../types/rootStack';
 import styles from '../assets/styles/index.styles';
 import FeatureList from '../components/FeatureList';
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Landing'>;
+
 export default function LandingPage() {
-  const router = useRouter();
+  const navigation = useNavigation<NavigationProp>();
 
   return (
     <View style={styles.container}>
@@ -29,7 +33,7 @@ export default function LandingPage() {
 
           <View style={styles.buttonContainer}>
             <Pressable
-              onPress={() => router.push('/login')}
+              onPress={() => navigation.navigate('Login')}
               style={({ pressed }) => [styles.getStartedButton, pressed && styles.getStartedButtonPressed]}
             >
               <Text style={styles.getStartedButtonText}>Get Started</Text>
