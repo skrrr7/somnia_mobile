@@ -1,23 +1,33 @@
 {
   "expo": {
+    "scheme": "somnia",
     "name": "SOMNiA",
     "slug": "somnia",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "mobile",
-    "userInterfaceStyle": "automatic",
+    "icon": "src/assets/images/icon.png",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "assetBundlePatterns": [
+      "**/*",
+      "node_modules/expo-router/assets/*"
+    ],
+    "splash": {
+      "image": "src/assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.belleza.mobile"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.somnia.mobile",
+      "package": "com.belleza.mobile",
       "permissions": [
         "android.permission.health.READ_BLOOD_PRESSURE",
         "android.permission.health.READ_EXERCISE",
@@ -28,21 +38,10 @@
       ]
     },
     "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "src/assets/images/favicon.png"
     },
     "plugins": [
       "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ],
       "react-native-health-connect",
       "expo-build-properties",
       "expo-health-connect",
@@ -50,18 +49,21 @@
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 35,
-            "targetSdkVersion": 35,
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
             "minSdkVersion": 26
           }
         }
-      ]
+      ],
+      "expo-font"
     ],
-    "experiments": {
-      "typedRoutes": true
-    },
     "extra": {
-      "VITE_BACKEND_URL": "http://localhost:4000"
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "somnia"
+      }
     }
   }
 }
