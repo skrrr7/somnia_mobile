@@ -1,10 +1,11 @@
 import express from 'express';
-import { addBloodPressureData, getBloodPressureData } from '../controllers/bloodPressureController.js';
+import { addBloodPressureData, deleteBloodPressureData, getLatestBloodPressure, updateBloodPressureData } from '../controllers/bloodPressureController.js';
 import userAuth from '../middleware/userAuth.js';
 
 const bpRouter = express.Router();
 
 bpRouter.post('/add', userAuth, addBloodPressureData);
-bpRouter.get('/dashboard', userAuth, getBloodPressureData);
-
+bpRouter.get('/get/:userId', userAuth, getLatestBloodPressure);
+bpRouter.patch('/update/:id', userAuth, updateBloodPressureData);
+bpRouter.delete('/delete/:id',userAuth, deleteBloodPressureData);
 export default bpRouter;
