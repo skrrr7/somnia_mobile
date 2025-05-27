@@ -16,7 +16,7 @@ export default function Login() {
     const router = useRouter();
 
     // Use localhost for web development
-    const backendUrl = 'http://localhost:4000'
+    const backendUrl = 'http://192.168.254.142:4000'
 
     const handleLogin = async () => {
     setIsLoading(true);
@@ -42,7 +42,7 @@ export default function Login() {
           type: 'success',
           text1: 'Login successful!',
         });
-        router.replace('HOME'); // Changed from push to replace to prevent going back to login
+        router.replace('/home');
       } else {
         Toast.show({
           type: 'error',
