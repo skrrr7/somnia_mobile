@@ -17,7 +17,8 @@ const bpSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-export default mongoose.model('Bp', bpSchema);
+const bloodPressure = mongoose.model('Bp', bpSchema)
+export default bloodPressure;
 
 
 // Sample data from Health Connect
