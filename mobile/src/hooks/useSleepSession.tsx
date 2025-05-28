@@ -32,7 +32,7 @@ export const useSleepSession = (date: Date) => {
       timeRangeFilter,
     });
 
-    console.log('SleepSession records:', JSON.stringify(records, null, 2));
+    // console.log('SleepSession records:', JSON.stringify(records, null, 2));
     return records;
   }, [requestSleepPermission, timeRangeFilter]);
 

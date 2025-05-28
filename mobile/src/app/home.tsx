@@ -7,13 +7,25 @@ import BottomNav from '../components/BottomNav';
 import { LineChart } from 'react-native-chart-kit';
 import SleepReco from './sleepReco';
 import Diary from './diary';
+import { ExerciseType } from 'react-native-health-connect';
+import { useExerciseSession } from '../hooks/useExerciseSession';
 import { initialize } from 'react-native-health-connect';
+import { useHeartRate } from '../hooks/useHeartRate';
+import { useSleepSession } from '../hooks/useSleepSession';
 import { useSteps } from '../hooks/useSteps';
 
 const screenWidth = Dimensions.get("window").width;
 
 export default function Home() {
+  const { readExerciseSession } = useExerciseSession(new Date());
+  const { readHeartRate } = useHeartRate(new Date());
+  const { readSleepSession } = useSleepSession(new Date());
   const { readSteps } = useSteps(new Date());
+
+  const [exerSession, setExerSession] = useState("");
+  const [exerType, setExerType] = useState("");
+  const [latestHeartRate, setLatestHeartRate] = useState(0);
+  const [totalSleepHours, setTotalSleepHours] = useState("");
   const [totalSteps, setTotalSteps] = useState(0);
 
   useEffect(() => {
@@ -24,22 +36,66 @@ export default function Home() {
         throw new Error('CLIENT_NOT_INITIALIZED');
       }
 
-      // Steps
+      // Last Exercise Session
+      const exerciseSession = await readExerciseSession();
+      exerciseSession[0].exerciseType
+      if (exerciseSession.length > 0) {
+        // Sort to get the most recent
+        const lastExercise = exerciseSession.sort((a, b) => new Date(b.endTime).getTime() - new Date(a.endTime).getTime())[0];
+        const start = new Date(lastExercise.startTime);
+        const end = new Date(lastExercise.endTime);
+        const totalExerciseMs = end.getTime() - start.getTime();
+        const totalMinutes = Math.floor(totalExerciseMs / (1000 * 60));
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        let formattedExercise = '';
+
+        if (hours > 0) {
+          formattedExercise = `${hours} hour${hours !== 1 ? 's' : ''} and ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+        } else {
+          formattedExercise = `${minutes} minute${minutes !== 1 ? 's' : ''}`;
+        }
+
+        setExerSession(formattedExercise);
+        // setExerType(exerciseType);
+        const getExerciseName = (value: number): string | undefined => {
+          return Object.keys(ExerciseType).find(
+            (key) => ExerciseType[key as keyof typeof ExerciseType] === value
+          );
+        };
+        
+        const exerciseName = getExerciseName(exerciseSession[0].exerciseType);
+        setExerType(exerciseName || 'Unknown');
+      }
+
+      // Latest Heart Rate
+      const heartRate = await readHeartRate();
+      if (heartRate.length > 0 && heartRate[0].samples.length > 0) {
+        setLatestHeartRate(heartRate[0].samples[0].beatsPerMinute);
+      }
+
+      // Total Sleep Hours today
+      const sleep = await readSleepSession();
+      const start = new Date(sleep[0].startTime);
+      const end = new Date(sleep[0].endTime);
+      const totalSleepMs = end.getTime() - start.getTime();
+
+      // Convert milliseconds to total minutes
+      const totalMinutes = Math.floor(totalSleepMs / (1000 * 60));
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
+
+      // Format as a string
+      const formattedSleep = `${hours} hour${hours !== 1 ? 's' : ''} and ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+      setTotalSleepHours(formattedSleep);
+
+      // Total Steps Today
       const steps = await readSteps();
       const totalSteps = steps.reduce((sum, record) => sum + (record.count || 0), 0);
-      // const stepMap = steps.reduce((map, record) => {
-      //   const key = `${record.startTime}-${record.endTime}`;
-      //   const count = record.count || 0;
-      
-      //   if (!map.has(key) || count > map.get(key)) {
-      //     map.set(key, count);
-      //   }
-      
-      //   return map;
-      // }, new Map());
-      
-      // const totalSteps = Array.from(stepMap.values()).reduce((sum, count) => sum + count, 0);
-      setTotalSteps(totalSteps);      
+      setTotalSteps(totalSteps);
+
+
+      // Sleep Chart
     };
 
     fetchHealthData();
@@ -62,12 +118,12 @@ export default function Home() {
   
     // Stat boxes data
     const statBoxes = [
-      { label: 'Calories Burned', value: '2,100', unit: 'kcal', icon: 'flame-outline', color: '#ff8c42' },
+      { label: exerSession, value: exerType, unit: '', icon: 'barbell-outline', color: '#ff8c42' },
       { label: 'Total Steps Today', value: totalSteps, unit: '', icon: 'walk-outline', color: '#43e97b' },
-      { label: 'Sleep', value: '7.5', unit: 'hrs', icon: 'moon-outline', color: '#5d3fd3' },
-      { label: 'Latest Heart Rate', value: '72', unit: 'bpm', icon: 'heart-outline', color: '#ff4d6d' },
+      { label: 'Hours of Sleep', value: totalSleepHours, unit: '', icon: 'moon-outline', color: '#5d3fd3' },
+      { label: 'Latest Heart Rate', value: latestHeartRate, unit: 'bpm', icon: 'heart-outline', color: '#ff4d6d' },
     ];
-  
+    
     return (
       <LinearGradient colors={['#1a1a2e', '#23234b']} style={styles.background}>
         {/* Header */}

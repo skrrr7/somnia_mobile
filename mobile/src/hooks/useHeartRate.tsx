@@ -32,7 +32,7 @@ export const useHeartRate = (date: Date) => {
       timeRangeFilter,
     });
 
-    console.log('HeartRate records:', JSON.stringify(records, null, 2));
+    //console.log('HeartRate records:', JSON.stringify(records, null, 2));
     return records;
   }, [requestHeartRate, timeRangeFilter]);
 
