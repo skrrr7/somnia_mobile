@@ -1,46 +1,29 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import HeartRate from '../models/heartRateModel.js';
+=======
+import HeartRate from "../models/heartRateModel.js";
+>>>>>>> 728401fd8390a3517db2bb10ac43577ba1c288a6
 
-export const addHeartRateData = async (req, res) => {
-    const { lastModifiedTime, id, samples, startTime, endTime } = req.body;
-    const userId = req.user.id; // Assuming user ID comes from auth middleware
+export const addHeartRate = async (req, res) => {
+    const { lastModifiedTime, id, samples, startTime, endTime, userId } = req.body;
 
-    if (!lastModifiedTime || !id || !samples || !startTime || !endTime) {
-        return res.status(400).json({ success: false, message: 'Missing required details' });
-    }
-
-    if (!Array.isArray(samples) || samples.length === 0) {
-        return res.status(400).json({ success: false, message: 'Samples must be a non-empty array' });
-    }
-
-    // Validate each sample
-    for (const sample of samples) {
-        if (!sample.beatsPerMinute || !sample.time) {
-            return res.status(400).json({ success: false, message: 'Each sample must have beatsPerMinute and time' });
-        }
+    if (!userId || !lastModifiedTime || !id || !samples || !startTime || !endTime) {
+        return res.status(400).json({ success: false, message: 'Missing required details!' });
     }
 
     try {
-        // Check if heart rate data with this ID already exists
-        const existingHeartRate = await HeartRate.findOne({ id });
-
-        if (existingHeartRate) {
-            return res.status(400).json({ success: false, message: "Heart rate data with this ID already exists" });
-        }
-
         const heartRateData = new HeartRate({
             user: userId,
-            lastModifiedTime: new Date(lastModifiedTime),
             id,
-            samples: samples.map(sample => ({
-                beatsPerMinute: sample.beatsPerMinute,
-                time: new Date(sample.time)
-            })),
+            lastModifiedTime: new Date(lastModifiedTime),
             startTime: new Date(startTime),
-            endTime: new Date(endTime)
+            endTime: new Date(endTime),
+            samples
         });
 
         await heartRateData.save();
+<<<<<<< HEAD
 
 =======
 import HeartRate from "../models/heartRateModel.js";
@@ -64,12 +47,15 @@ export const addHeartRate = async (req, res) => {
 
         await heartRateData.save();
 >>>>>>> ca24ff9c3e81bf121923869272d60b633f134d5a
+=======
+>>>>>>> 728401fd8390a3517db2bb10ac43577ba1c288a6
         return res.status(201).json({ success: true, message: "Heart rate data added successfully" });
 
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
     }
 };
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 export const getHeartRateData = async (req, res) => {
@@ -336,3 +322,5 @@ export const bulkAddHeartRateData = async (req, res) => {
 };
 =======
 >>>>>>> ca24ff9c3e81bf121923869272d60b633f134d5a
+=======
+>>>>>>> 728401fd8390a3517db2bb10ac43577ba1c288a6

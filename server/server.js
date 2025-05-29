@@ -34,6 +34,13 @@ app.use(cors({origin: allowedOrigins, credentials: true}));
 //API Endpoints
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+<<<<<<< HEAD
 
 
+=======
+app.use('/api/bp', bpRouter);
+app.use('/api/step',stepRouter);
+app.use('/api/heartRate',heartRateRouter);
+app.use('/api/sleepSession', sleepSessionRouter);
+>>>>>>> 728401fd8390a3517db2bb10ac43577ba1c288a6
 app.listen(port, ()=> console.log(`Server started on PORT:${port}`));
