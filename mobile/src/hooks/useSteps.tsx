@@ -32,7 +32,7 @@ export const useSteps = (date: Date) => {
       timeRangeFilter,
     });
 
-    console.log('Steps records:', JSON.stringify(records, null, 2));
+    //console.log('Steps records:', JSON.stringify(records, null, 2));
     return records;
   }, [requestSteps, timeRangeFilter]);
 

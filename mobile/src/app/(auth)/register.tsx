@@ -19,7 +19,7 @@ export default function Register() {
   const router = useRouter();
 
   // Use localhost for web development
-  const backendUrl = 'http://localhost:4000';
+  const backendUrl = 'http://192.168.1.8:4000'
 
   const handleRegister = async () => {
     // Validation

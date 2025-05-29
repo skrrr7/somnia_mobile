@@ -16,7 +16,7 @@ export default function Login() {
     const router = useRouter();
 
     // Use localhost for web development
-    const backendUrl = 'http://localhost:4000'
+    const backendUrl = 'http://192.168.1.8:4000'
 
     const handleLogin = async () => {
     setIsLoading(true);
@@ -29,6 +29,7 @@ export default function Login() {
 
     try {
       // Send POST request to the backend to login
+      console.log('Attempting login to:', `${backendUrl}/api/auth/login`);
       const response = await axios.post(`${backendUrl}/api/auth/login`, userData, {
         headers: {
           'Content-Type': 'application/json',
@@ -38,12 +39,14 @@ export default function Login() {
 
       // Handle successful login
       if (response.data.success) {
+        console.log('Login successful, response:', response.data);
         Toast.show({
           type: 'success',
           text1: 'Login successful!',
         });
-        router.replace('/'); // Changed from 'HOME' to '/' to match the root route
+        router.replace('/home'); 
       } else {
+        console.log('Login failed, response:', response.data);
         Toast.show({
           type: 'error',
           text1: 'Login failed',
@@ -51,6 +54,12 @@ export default function Login() {
         });
       }
     } catch (error) {
+      console.error('Login error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        url: error.config?.url
+      });
       Toast.show({
         type: 'error',
         text1: 'Login Error',

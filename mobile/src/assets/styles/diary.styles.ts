@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   diaryForm: {
-    flex: 1,
+    
   },
   formGroup: {
     marginBottom: 20,

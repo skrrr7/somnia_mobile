@@ -18,6 +18,7 @@ const allowedOrigins = [
     'http://localhost:8081',         // Expo Go default local web (Expo dev tools)
     'http://localhost:8080',         // Expo Go default local web (Expo dev tools)
     'http://localhost:4000',
+    'http://localhost:8081',         // Expo Go default local web (Expo dev tools)
     'http://localhost:19006',        // Expo web
     'exp://127.0.0.1:19000',         // Expo mobile local dev (iOS/Android)
     'http://192.168.0.X:19006',      // Replace with your LAN IP if using physical device

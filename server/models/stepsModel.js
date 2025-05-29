@@ -1,19 +1,41 @@
 import mongoose from 'mongoose';
 
 const stepSchema = new mongoose.Schema({
-  user:              { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
-  id:                { type: String, required: true, unique: true },
-  lastModifiedTime:  { type: Date, required: true },
-  count:             { type: Number, required: true, min: 0 },
-  startTime:         { type: Date, required: true },
-  endTime:           { type: Date, required: true },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    index: true
+  },
+  id: {
+    type: String,
+    required: true,
+    unique: true // Unique external ID from the source (e.g., Google Fit)
+  },
+  lastModifiedTime: {
+    type: Date,
+    required: true
+  },
+  count: {
+    type: Number,
+    required: true,
+    min: 0
+  },
+  startTime: {
+    type: Date,
+    required: true
+  },
+  endTime: {
+    type: Date,
+    required: true
+  }
 }, {
-  timestamps: true,
+  timestamps: true // Automatically manages createdAt and updatedAt
 });
 
 const Step = mongoose.model('Step', stepSchema);
-export default Step;
 
+export default Step;
 
 
 // Sample data from Health Connect

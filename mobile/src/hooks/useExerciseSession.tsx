@@ -19,7 +19,7 @@ export const useExerciseSession = (date: Date) => {
     const granted = await requestPermission([
       { accessType: 'read', recordType: 'ExerciseSession' },
     ]);
-
+    
     if (!granted.some((p) => p.recordType === 'ExerciseSession')) {
       throw new Error('Permission not granted for ExerciseSession');
     }
@@ -32,7 +32,7 @@ export const useExerciseSession = (date: Date) => {
       timeRangeFilter,
     });
 
-    console.log('ExerciseSession records:', JSON.stringify(records, null, 2));
+    // console.log('ExerciseSession records:', JSON.stringify(records, null, 2));
     return records;
   }, [requestExerciseSession, timeRangeFilter]);
 
