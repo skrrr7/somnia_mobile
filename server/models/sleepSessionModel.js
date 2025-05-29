@@ -1,60 +1,26 @@
 import mongoose from 'mongoose';
 
-// Subdocument schema for each sleep stage
 const sleepStageSchema = new mongoose.Schema({
-  startTime: {
-    type: Date,
-    required: true
-  },
-  endTime: {
-    type: Date,
-    required: true
-  },
-  stage: {
-    type: Number,
-  }
-}, { _id: false }); // Avoid creating _id for subdocuments
+  startTime:  { type: Date, required: true },
+  endTime:    { type: Date, required: true },
+  stage:      { type: Number },
+}, { _id: false });
 
-// Main schema for sleep session
 const sleepSessionSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-    index: true
-  },
-  stages: {
-    type: [sleepStageSchema],
-    default: []
-  },
-  lastModifiedTime: {
-    type: Date,
-    required: true
-  },
-  id: {
-    type: String,
-    required: true,
-    unique: true // Unique identifier from external data source
-  },
-  title: {
-    type: String,
-    default: null
-  },
-  startTime: {
-    type: Date,
-    required: true
-  },
-  endTime: {
-    type: Date,
-    required: true
-  }
+  user:              { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+  stages:            { type: [sleepStageSchema], default: [] },
+  lastModifiedTime:  { type: Date, required: true },
+  id:                { type: String, required: true, unique: true },
+  title:             { type: String, default: null },
+  startTime:         { type: Date, required: true },
+  endTime:           { type: Date, required: true },
 }, {
-  timestamps: true
+  timestamps: true,
 });
 
 const SleepSession = mongoose.model('SleepSession', sleepSessionSchema);
-
 export default SleepSession;
+
 
 // Sample data from Health Connect
 // {

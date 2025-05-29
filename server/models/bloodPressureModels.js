@@ -1,50 +1,25 @@
 import mongoose from 'mongoose';
 
 const bpSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Make sure this matches your User model name
-    required: true,
-    index: true, // For fast querying
-  },
+  user:                 { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
   diastolic: {
-    inMillimetersOfMercury: {
-      type: Number,
-      required: true,
-    },
-  },
+    inMillimetersOfMercury:  { type: Number, required: true },
+},
   systolic: {
-    inMillimetersOfMercury: {
-      type: Number,
-      required: true,
-    },
+    inMillimetersOfMercury:  { type: Number, required: true },
   },
-  bodyPosition: {
-    type: Number,
-    required: true,
-  },
-  measurementLocation: {
-    type: Number,
-    required: true,
-  },
-  lastModifiedTime: {
-    type: Date,
-    required: true,
-  },
-  id: {
-    type: String,
-    required: true,
-    unique: true, // Unique external ID
-  },
-  time: {
-    type: Date,
-    required: true,
-  },
+  bodyPosition:         { type: Number, required: true },
+  measurementLocation:  { type: Number, required: true },
+  lastModifiedTime:     { type: Date, required: true },
+  id:                   { type: String, required: true, unique: true },
+  time:                 { type: Date, required: true },
 }, {
   timestamps: true,
 });
 
-export default mongoose.model('Bp', bpSchema);
+const bloodPressure = mongoose.model('Bp', bpSchema)
+export default bloodPressure;
+
 
 // Sample data from Health Connect
 // {
