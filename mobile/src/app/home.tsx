@@ -1,27 +1,32 @@
 import { View, Text, TouchableOpacity, ScrollView, Image, Dimensions } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import styles from '../assets/styles/home.styles';
 import LinearGradient from 'react-native-linear-gradient';
 import BottomNav from '../components/BottomNav';
 import { LineChart } from 'react-native-chart-kit';
 import SleepReco from './sleepReco';
 import Diary from './diary';
-import { ExerciseType, SleepStageType } from 'react-native-health-connect';
+import { ExerciseType, SleepStageType, RecordResult } from 'react-native-health-connect';
 import { useExerciseSession } from '../hooks/useExerciseSession';
 import { initialize } from 'react-native-health-connect';
 import { useHeartRate } from '../hooks/useHeartRate';
 import { useSleepSession } from '../hooks/useSleepSession';
 import { useSteps } from '../hooks/useSteps';
+import { syncToDB } from '../utils/syncToDB';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const screenWidth = Dimensions.get("window").width;
 
 export default function Home() {
+
   const { readExerciseSession } = useExerciseSession(new Date());
   const { readHeartRate } = useHeartRate(new Date());
   const { readSleepSession } = useSleepSession(new Date());
   const { readSteps } = useSteps(new Date());
-
+  const [heartRateData, setHeartRateData] = useState([]);
+  const [sleepDataRaw, setSleepDataRaw] = useState([]);
+  const [stepsData, setStepsData] = useState([]);
   const [exerSession, setExerSession] = useState("");
   const [exerType, setExerType] = useState("");
   const [latestHeartRate, setLatestHeartRate] = useState(0);
@@ -37,7 +42,7 @@ export default function Home() {
       },
     ],
   });
-
+  
   useEffect(() => {
     const fetchHealthData = async () => {
       const isInitialized = await initialize();
@@ -45,7 +50,9 @@ export default function Home() {
       if (!isInitialized) {
         throw new Error('CLIENT_NOT_INITIALIZED');
       }
-
+      
+      
+      // Exercise
       const exerciseSession = await readExerciseSession();
       if (exerciseSession.length > 0) {
         const lastExercise = exerciseSession.sort((a, b) => new Date(b.endTime).getTime() - new Date(a.endTime).getTime())[0];
@@ -62,7 +69,7 @@ export default function Home() {
         } else {
           formattedExercise = `${minutes} minute${minutes !== 1 ? 's' : ''}`;
         }
-
+        
         setExerSession(formattedExercise);
 
         const getExerciseName = (value: number): string | undefined => {
@@ -73,13 +80,17 @@ export default function Home() {
         const exerciseName = getExerciseName(exerciseSession[0].exerciseType);
         setExerType(exerciseName || 'Unknown');
       }
-
+      
+      // Heart Rate
       const heartRate = await readHeartRate();
+      setHeartRateData(heartRate);
       if (heartRate.length > 0 && heartRate[0].samples.length > 0) {
         setLatestHeartRate(heartRate[0].samples[0].beatsPerMinute);
       }
 
+      // Sleep Session
       const sleep = await readSleepSession();
+      setSleepDataRaw(sleep);
       const start = new Date(sleep[0].startTime);
       const end = new Date(sleep[0].endTime);
       const totalSleepMs = end.getTime() - start.getTime();
@@ -89,10 +100,13 @@ export default function Home() {
       const formattedSleep = `${hours} hour${hours !== 1 ? 's' : ''} and ${minutes} minute${minutes !== 1 ? 's' : ''}`;
       setTotalSleepHours(formattedSleep);
 
+      // Steps
       const steps = await readSteps();
+      setStepsData(steps);
       const totalSteps = steps.reduce((sum, record) => sum + (record.count || 0), 0);
       setTotalSteps(totalSteps);
 
+      // Sleep Graph
       const labels: string[] = [];
       const data: number[] = [];
       const sleepStages = sleep.flatMap(session => session.stages || []);
@@ -204,6 +218,15 @@ export default function Home() {
                 </View>
               ))}
             </View>
+
+            <TouchableOpacity 
+              style={styles.syncButton}
+              onPress={async () => {
+
+                await syncToDB(heartRateData, sleepDataRaw, stepsData, "6823168936d28adf4ef5105e");
+              }}>
+              <Text style={styles.syncButtonText}>Sync data to database</Text>
+            </TouchableOpacity>
           </>
         )}
 

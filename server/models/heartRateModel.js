@@ -1,51 +1,24 @@
 import mongoose from 'mongoose';
 
 const heartRateSampleSchema = new mongoose.Schema({
-  beatsPerMinute: {
-    type: Number,
-    required: true,
-  },
-  time: {
-    type: Date,
-    required: true,
-  }
-}, { _id: false }); // Prevents creation of separate _id for each sample
+  beatsPerMinute:  { type: Number, required: true },
+  time:            { type: Date, required: true },
+}, { _id: false });
 
 const heartRateSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-    index: true, // Improves query performance for multi-user setups
-  },
-  lastModifiedTime: {
-    type: Date,
-    required: true,
-  },
-  id: {
-    type: String,
-    required: true,
-    unique: true, // external unique ID (e.g. from Google Fit)
-  },
-  samples: {
-    type: [heartRateSampleSchema],
-    required: true,
-  },
-  startTime: {
-    type: Date,
-    required: true,
-  },
-  endTime: {
-    type: Date,
-    required: true,
-  }
+  user:              { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+  lastModifiedTime:  { type: Date, required: true },
+  id:                { type: String, required: true, unique: true },
+  samples:           { type: [heartRateSampleSchema], required: true },
+  startTime:         { type: Date, required: true },
+  endTime:           { type: Date, required: true },
 }, {
-  timestamps: true
+  timestamps: true,
 });
 
 const HeartRate = mongoose.model('HeartRate', heartRateSchema);
-
 export default HeartRate;
+
 
 
 // Sample data from Health Connect

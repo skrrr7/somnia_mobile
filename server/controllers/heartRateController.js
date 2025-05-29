@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import HeartRate from '../models/heartRateModel.js';
 
 export const addHeartRateData = async (req, res) => {
@@ -41,12 +42,35 @@ export const addHeartRateData = async (req, res) => {
 
         await heartRateData.save();
 
+=======
+import HeartRate from "../models/heartRateModel.js";
+
+export const addHeartRate = async (req, res) => {
+    const { lastModifiedTime, id, samples, startTime, endTime, userId } = req.body;
+
+    if (!userId || !lastModifiedTime || !id || !samples || !startTime || !endTime) {
+        return res.status(400).json({ success: false, message: 'Missing required details!' });
+    }
+
+    try {
+        const heartRateData = new HeartRate({
+            user: userId,
+            id,
+            lastModifiedTime: new Date(lastModifiedTime),
+            startTime: new Date(startTime),
+            endTime: new Date(endTime),
+            samples
+        });
+
+        await heartRateData.save();
+>>>>>>> ca24ff9c3e81bf121923869272d60b633f134d5a
         return res.status(201).json({ success: true, message: "Heart rate data added successfully" });
 
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
     }
 };
+<<<<<<< HEAD
 
 export const getHeartRateData = async (req, res) => {
     const userId = req.user.id;
@@ -310,3 +334,5 @@ export const bulkAddHeartRateData = async (req, res) => {
         return res.status(500).json({ success: false, message: error.message });
     }
 };
+=======
+>>>>>>> ca24ff9c3e81bf121923869272d60b633f134d5a

@@ -4,7 +4,7 @@ import userAuth from '../middleware/userAuth.js';
 
 const bpRouter = express.Router();
 
-bpRouter.post('/add', userAuth, addBloodPressureData);
+bpRouter.post('/addBloodPressure', userAuth, addBloodPressureData);
 bpRouter.get('/get/:userId', userAuth, getLatestBloodPressure);
 bpRouter.patch('/update/:id', userAuth, updateBloodPressureData);
 bpRouter.delete('/delete/:id',userAuth, deleteBloodPressureData);
