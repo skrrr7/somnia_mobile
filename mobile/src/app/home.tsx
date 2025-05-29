@@ -20,10 +20,10 @@ const screenWidth = Dimensions.get("window").width;
 
 export default function Home() {
 
-  const { readExerciseSession } = useExerciseSession(new Date());
-  const { readHeartRate } = useHeartRate(new Date());
-  const { readSleepSession } = useSleepSession(new Date());
-  const { readSteps } = useSteps(new Date());
+  const { readExerciseSession } = useExerciseSession(new Date('2025-05-29'));
+  const { readHeartRate } = useHeartRate(new Date('2025-05-29'));
+  const { readSleepSession } = useSleepSession(new Date('2025-05-29'));
+  const { readSteps } = useSteps(new Date('2025-05-29'));
   const [heartRateData, setHeartRateData] = useState([]);
   const [sleepDataRaw, setSleepDataRaw] = useState([]);
   const [stepsData, setStepsData] = useState([]);
@@ -51,6 +51,11 @@ export default function Home() {
         throw new Error('CLIENT_NOT_INITIALIZED');
       }
       
+      // Steps
+      const steps = await readSteps();
+      setStepsData(steps);
+      const totalSteps = steps.reduce((sum, record) => sum + (record.count || 0), 0);
+      setTotalSteps(totalSteps);
       
       // Exercise
       const exerciseSession = await readExerciseSession();
@@ -91,6 +96,7 @@ export default function Home() {
       // Sleep Session
       const sleep = await readSleepSession();
       setSleepDataRaw(sleep);
+      // console.log(sleep[0].sta);
       const start = new Date(sleep[0].startTime);
       const end = new Date(sleep[0].endTime);
       const totalSleepMs = end.getTime() - start.getTime();
@@ -99,12 +105,6 @@ export default function Home() {
       const minutes = totalMinutes % 60;
       const formattedSleep = `${hours} hour${hours !== 1 ? 's' : ''} and ${minutes} minute${minutes !== 1 ? 's' : ''}`;
       setTotalSleepHours(formattedSleep);
-
-      // Steps
-      const steps = await readSteps();
-      setStepsData(steps);
-      const totalSteps = steps.reduce((sum, record) => sum + (record.count || 0), 0);
-      setTotalSteps(totalSteps);
 
       // Sleep Graph
       const labels: string[] = [];
@@ -148,7 +148,7 @@ export default function Home() {
     };
 
     fetchHealthData();
-  }, [readSteps]);
+  }, []);
 
   const [selectedTab, setSelectedTab] = useState('home');
 

@@ -8,15 +8,16 @@ import AuthContainer from '../../components/AuthContainer';
 import AuthTextInputs from '../../components/AuthITextInputs';
 import AuthPasswordInputs from '../../components/AuthPasswordInputs';
 import styles from '../../assets/styles/login.styles';
-
+ 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-
+ 
     const router = useRouter();
-
+ 
     // Use localhost for web development
+<<<<<<< HEAD
     const backendUrl = 'http://192.168.1.8:4000'
 
     const handleLogin = async () => {
@@ -28,6 +29,19 @@ export default function Login() {
             password 
         };
 
+=======
+    const backendUrl = 'http://192.168.254.142:4000'
+ 
+    const handleLogin = async () => {
+        setIsLoading(true);
+ 
+        // Create user data object
+        const userData = {
+            email,
+            password
+        };
+ 
+>>>>>>> d4eb89d042084f702f50d394c47e685c34a2e95d
         try {
             // Send POST request to the backend to login
             console.log('Attempting login to:', `${backendUrl}/api/auth/login`);
@@ -37,6 +51,7 @@ export default function Login() {
                 },
                 withCredentials: true,
             });
+<<<<<<< HEAD
 
             // Handle successful login
             if (response.data.success) {
@@ -45,6 +60,16 @@ export default function Login() {
                 // Extract token from cookie
                 const token = response.headers['set-cookie']?.[0]?.split(';')[0]?.split('=')[1];
                 
+=======
+ 
+            // Handle successful login
+            if (response.data.success) {
+                console.log('Login successful, response:', response.data);
+               
+                // Extract token from cookie
+                const token = response.data.token;
+                console.log(token);
+>>>>>>> d4eb89d042084f702f50d394c47e685c34a2e95d
                 if (token) {
                     // Store auth data
                     const authData = {
@@ -52,14 +77,24 @@ export default function Login() {
                         timestamp: new Date().getTime(),
                         isAuthenticated: true
                     };
+<<<<<<< HEAD
                     await AsyncStorage.setItem('authData', JSON.stringify(authData));
                 }
 
+=======
+                    await AsyncStorage.setItem('token', token);
+                }
+ 
+>>>>>>> d4eb89d042084f702f50d394c47e685c34a2e95d
                 Toast.show({
                     type: 'success',
                     text1: 'Login successful!',
                 });
+<<<<<<< HEAD
                 router.replace('/home'); 
+=======
+                router.replace('/home');
+>>>>>>> d4eb89d042084f702f50d394c47e685c34a2e95d
             } else {
                 console.log('Login failed, response:', response.data);
                 Toast.show({
@@ -84,17 +119,29 @@ export default function Login() {
             setIsLoading(false);
         }
     };
+<<<<<<< HEAD
   
     return (
         <AuthContainer 
             authTitleImg={require('../../assets/images/login.png')} 
             authType="Login" 
+=======
+ 
+    return (
+        <AuthContainer
+            authTitleImg={require('../../assets/images/login.png')}
+            authType="Login"
+>>>>>>> d4eb89d042084f702f50d394c47e685c34a2e95d
             authOnPress={handleLogin}
             authBtnLoading={isLoading}
             goToLink={
                 <View style={styles.footer}>
                     <Text style={styles.footerText}>Don't have an account?</Text>
+<<<<<<< HEAD
                     
+=======
+                   
+>>>>>>> d4eb89d042084f702f50d394c47e685c34a2e95d
                     <Link href="/(auth)/register" asChild>
                         <TouchableOpacity>
                             <Text style={styles.link}>Register</Text>
@@ -105,6 +152,7 @@ export default function Login() {
             <View style={styles.formContainer}>
                 {/* Email */}
                 <Text style={styles.label}>Email</Text>
+<<<<<<< HEAD
                 <AuthTextInputs 
                     icon="mail-outline" 
                     placeHolder="Enter your email" 
@@ -118,6 +166,21 @@ export default function Login() {
                     icon="lock-closed-outline" 
                     placeHolder="Enter your password" 
                     value={password} 
+=======
+                <AuthTextInputs
+                    icon="mail-outline"
+                    placeHolder="Enter your email"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address" />
+ 
+                {/* Password */}
+                <Text style={styles.label}>Password</Text>
+                <AuthPasswordInputs
+                    icon="lock-closed-outline"
+                    placeHolder="Enter your password"
+                    value={password}
+>>>>>>> d4eb89d042084f702f50d394c47e685c34a2e95d
                     onChangeText={setPassword} />
             </View>
         </AuthContainer>
