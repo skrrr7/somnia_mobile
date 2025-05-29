@@ -1,6 +1,6 @@
 import { StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 
-interface Styles {
+export interface Styles {
   background: ViewStyle;
   container: ViewStyle;
   header: ViewStyle;
@@ -68,9 +68,11 @@ interface Styles {
   notesInput: TextStyle;
   saveButton: ViewStyle;
   saveButtonText: TextStyle;
+  syncButton: ViewStyle;
+  syncButtonText: TextStyle;
 }
 
-export default StyleSheet.create<Styles>({
+const styles = StyleSheet.create<Styles>({
   background: {
     flex: 1,
   },
@@ -427,29 +429,18 @@ export default StyleSheet.create<Styles>({
     fontSize: 16,
     fontWeight: 'bold',
   },
-<<<<<<< HEAD
-}); 
-=======
-  syncButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
   syncButton: {
-    backgroundColor: '#4F46E5', // Indigo 600
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+    backgroundColor: '#a259ff',
+    padding: 16,
     borderRadius: 12,
+    margin: 16,
     alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3, // for Android shadow
-    marginTop: 20,
   },
+  syncButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  }
 });
 
 export default styles; 
->>>>>>> ca24ff9c3e81bf121923869272d60b633f134d5a
