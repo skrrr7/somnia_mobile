@@ -50,7 +50,9 @@ export default function Login() {
                     const authData = {
                         token,
                         timestamp: new Date().getTime(),
-                        isAuthenticated: true
+                        isAuthenticated: true,
+                        email: email,
+                        name: email.split('@')[0]
                     };
                     await AsyncStorage.setItem('authData', JSON.stringify(authData));
                 }

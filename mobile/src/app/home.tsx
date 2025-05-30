@@ -7,6 +7,7 @@ import BottomNav from '../components/BottomNav';
 import { LineChart } from 'react-native-chart-kit';
 import SleepReco from './sleepReco';
 import Diary from './diary';
+import Profile from './profile';
 import { ExerciseType, SleepStageType, RecordResult } from 'react-native-health-connect';
 import { useExerciseSession } from '../hooks/useExerciseSession';
 import { initialize } from 'react-native-health-connect';
@@ -21,6 +22,7 @@ const screenWidth = Dimensions.get("window").width;
 export default function Home() {
 
   const { readExerciseSession } = useExerciseSession(new Date());
+  const [userData, setUserData] = useState({ name: '', email: '' });
   const { readHeartRate } = useHeartRate(new Date());
   const { readSleepSession } = useSleepSession(new Date());
   const { readSteps } = useSteps(new Date());
@@ -152,6 +154,20 @@ export default function Home() {
 
   const [selectedTab, setSelectedTab] = useState('home');
 
+  useEffect(() => {
+    const loadUserData = async () => {
+      const authDataString = await AsyncStorage.getItem('authData');
+      if (authDataString) {
+        const authData = JSON.parse(authDataString);
+        setUserData({
+          name: authData.name || 'User',
+          email: authData.email || ''
+        });
+      }
+    };
+    loadUserData();
+  }, []);
+
   const statBoxes = [
     { label: exerSession, value: exerType, unit: '', icon: 'barbell-outline', color: '#ff8c42' },
     { label: 'Total Steps Today', value: totalSteps, unit: '', icon: 'walk-outline', color: '#43e97b' },
@@ -161,20 +177,22 @@ export default function Home() {
 
   return (
     <LinearGradient colors={['#1a1a2e', '#23234b']} style={styles.background}>
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <Image source={require('../assets/images/default-avatar.png')} style={styles.avatar} />
-          <View>
-            <Text style={styles.greeting}>Good evening,</Text>
-            <Text style={styles.profileName}>John Doe</Text>
+      {selectedTab !== 'profile' && (
+        <View style={styles.header}>
+          <View style={styles.headerLeft}>
+            <Image source={require('../assets/images/default-avatar.png')} style={styles.avatar} />
+            <View>
+              <Text style={styles.greeting}>Good evening,</Text>
+              <Text style={styles.profileName}>{userData.name}</Text>
+            </View>
           </View>
+          <TouchableOpacity 
+            style={styles.profileButton}
+            onPress={() => setSelectedTab('profile')}>
+            <Ionicons name="person-circle-outline" size={32} color="#fff" />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity 
-          style={styles.profileButton}
-          onPress={() => setSelectedTab('profile')}>
-          <Ionicons name="person-circle-outline" size={32} color="#fff" />
-        </TouchableOpacity>
-      </View>
+      )}
 
       <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
         {selectedTab === 'home' && (
@@ -231,6 +249,7 @@ export default function Home() {
 
         {selectedTab === 'recommendations' && <SleepReco />}
         {selectedTab === 'diary' && <Diary />}
+        {selectedTab === 'profile' && <Profile />}
       </ScrollView>
 
       <View style={styles.bottomNavContainer}>
