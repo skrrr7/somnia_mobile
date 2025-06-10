@@ -1,23 +1,24 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image, TextInput, Pressable, StyleSheet } from 'react-native';
 import { useState } from 'react'
 import { useRouter, Link } from 'expo-router'
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AuthContainer from '../../components/AuthContainer';
-import AuthTextInputs from '../../components/AuthITextInputs';
-import AuthPasswordInputs from '../../components/AuthPasswordInputs';
 import styles from '../../assets/styles/login.styles';
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
 
     const router = useRouter();
 
     // Use localhost for web development
-    const backendUrl = 'http://192.168.1.8:4000'
+    const backendUrl = 'http://192.168.1.12:4000'
 
     const handleLogin = async () => {
         setIsLoading(true);
@@ -88,40 +89,81 @@ export default function Login() {
     };
   
     return (
-        <AuthContainer 
-            authTitleImg={require('../../assets/images/login.png')} 
-            authType="Login" 
-            authOnPress={handleLogin}
-            authBtnLoading={isLoading}
-            goToLink={
-                <View style={styles.footer}>
-                    <Text style={styles.footerText}>Don't have an account?</Text>
-                    
-                    <Link href="/(auth)/register" asChild>
-                        <TouchableOpacity>
-                            <Text style={styles.link}>Register</Text>
-                        </TouchableOpacity>
-                    </Link>
+        <LinearGradient
+          colors={['#18192a', '#23395d', '#3578e5']}
+          style={{ flex: 1 }}
+        >
+            <View style={styles.headerContainer}>
+                <Image source={require('../../assets/images/somnia.png')} style={styles.logo} resizeMode="contain" />
+            </View>
+            <View style={styles.cardNew}>
+                {/* Tab Switcher */}
+                <View style={styles.tabSwitcher}>
+                    <View style={[styles.tab, styles.tabActive]}><Text style={styles.tabTextActive}>Log In</Text></View>
+                    <Pressable style={styles.tab} onPress={() => router.push('/(auth)/register')}>
+                        <Text style={styles.tabText}>Sign Up</Text>
+                    </Pressable>
                 </View>
-            }>
-            <View style={styles.formContainer}>
                 {/* Email */}
                 <Text style={styles.label}>Email</Text>
-                <AuthTextInputs 
-                    icon="mail-outline" 
-                    placeHolder="Enter your email" 
-                    value={email} 
-                    onChangeText={setEmail} 
-                    keyboardType="email-address" />
-
+                <View style={styles.inputRow}>
+                    <TextInput
+                        style={styles.inputNew}
+                        placeholder="Enter your email"
+                        placeholderTextColor="#aaa"
+                        value={email}
+                        onChangeText={setEmail}
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                    />
+                </View>
                 {/* Password */}
                 <Text style={styles.label}>Password</Text>
-                <AuthPasswordInputs 
-                    icon="lock-closed-outline" 
-                    placeHolder="Enter your password" 
-                    value={password} 
-                    onChangeText={setPassword} />
+                <View style={styles.inputRow}>
+                    <TextInput
+                        style={styles.inputNew}
+                        placeholder="Enter your password"
+                        placeholderTextColor="#aaa"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry={!showPassword}
+                    />
+                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                        <Icon name={showPassword ? 'eye-off' : 'eye'} size={22} color="#888" style={styles.eyeIcon} />
+                    </TouchableOpacity>
+                </View>
+                {/* Remember me and Forgot Password */}
+                <View style={styles.rowBetween}>
+                    <TouchableOpacity style={styles.rememberMe} onPress={() => setRememberMe(!rememberMe)}>
+                        <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]} />
+                        <Text style={styles.rememberMeText}>Remember me</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Text style={styles.forgotText}>Forgot Password ?</Text>
+                    </TouchableOpacity>
+                </View>
+                {/* Log In Button */}
+                <TouchableOpacity style={styles.loginButton} onPress={handleLogin} disabled={isLoading}>
+                    <Text style={styles.loginButtonText}>{isLoading ? 'Loading...' : 'Log In'}</Text>
+                </TouchableOpacity>
+                {/* Divider */}
+                <View style={styles.dividerRow}>
+                    <View style={styles.dividerLine} />
+                    <Text style={styles.orText}>Or</Text>
+                    <View style={styles.dividerLine} />
+                </View>
+                {/* Social Buttons */}
+                <View style={styles.socialRow}>
+                  <TouchableOpacity style={[styles.socialBtnFull, { marginRight: 6 }]}> 
+                    <Image source={require('../../assets/images/google.png')} style={styles.socialIconFull} />
+                    <Text style={styles.socialBtnText}>Google</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.socialBtnFull, { marginLeft: 6 }]}> 
+                    <Image source={require('../../assets/images/facebook.png')} style={styles.socialIconFull} />
+                    <Text style={styles.socialBtnText}>Facebook</Text>
+                  </TouchableOpacity>
+                </View>
             </View>
-        </AuthContainer>
+        </LinearGradient>
     );
 }
