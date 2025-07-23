@@ -18,7 +18,7 @@ export default function Login() {
     const router = useRouter();
 
     // Use localhost for web development
-    const backendUrl = 'http://192.168.1.12:4000'
+    const backendUrl = 'http://192.168.1.8:4000';
 
     const handleLogin = async () => {
         setIsLoading(true);
@@ -90,7 +90,7 @@ export default function Login() {
   
     return (
         <LinearGradient
-          colors={['#18192a', '#23395d', '#3578e5']}
+          colors={['#101522', '#18213a', '#2d325a']}
           style={{ flex: 1 }}
         >
             <View style={styles.headerContainer}>

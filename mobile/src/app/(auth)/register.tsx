@@ -9,25 +9,24 @@ import LinearGradient from 'react-native-linear-gradient';
 
 export default function Register() {
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const router = useRouter();
-  const backendUrl = 'http://192.168.1.12:4000';
+  const backendUrl = 'http://192.168.1.8:4000';
 
   const handleRegister = async () => {
-    if (password !== confirmPassword) {
+    if (!email || !name || !password) {
       Toast.show({
         type: 'error',
-        text1: 'Passwords do not match!',
+        text1: 'Please fill in all fields!',
       });
       return;
     }
     setIsLoading(true);
-    const userData = { email, password };
+    const userData = { email, name, password };
     try {
       const response = await axios.post(`${backendUrl}/api/auth/register`, userData, {
         headers: { 'Content-Type': 'application/json' },
@@ -48,7 +47,7 @@ export default function Register() {
 
   return (
     <LinearGradient
-    colors={['#18192a', '#23395d', '#3578e5']}
+    colors={['#101522', '#18213a', '#2d325a']}
       style={{ flex: 1 }}
     >
       <View style={styles.headerContainer}>
@@ -75,6 +74,18 @@ export default function Register() {
             autoCapitalize="none"
           />
         </View>
+        {/* Name */}
+        <Text style={styles.label}>Name</Text>
+        <View style={styles.inputRow}>
+          <TextInput
+            style={styles.inputNew}
+            placeholder="Enter your name"
+            placeholderTextColor="#aaa"
+            value={name}
+            onChangeText={setName}
+            autoCapitalize="words"
+          />
+        </View>
         {/* Password */}
         <Text style={styles.label}>Password</Text>
         <View style={styles.inputRow}>
@@ -88,21 +99,6 @@ export default function Register() {
           />
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
             <Icon name={showPassword ? 'eye-off' : 'eye'} size={22} color="#888" style={styles.eyeIcon} />
-          </TouchableOpacity>
-        </View>
-        {/* Confirm Password */}
-        <Text style={styles.label}>Confirm Password</Text>
-        <View style={styles.inputRow}>
-          <TextInput
-            style={styles.inputNew}
-            placeholder="Enter password again"
-            placeholderTextColor="#aaa"
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            secureTextEntry={!showConfirmPassword}
-          />
-          <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
-            <Icon name={showConfirmPassword ? 'eye-off' : 'eye'} size={22} color="#888" style={styles.eyeIcon} />
           </TouchableOpacity>
         </View>
         {/* Sign Up Button */}
