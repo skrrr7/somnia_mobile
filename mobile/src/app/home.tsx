@@ -7,6 +7,7 @@ import BottomNav from '../components/BottomNav';
 import { LineChart } from 'react-native-chart-kit';
 import SleepReco from './sleepReco';
 import Diary from './diary';
+import Profile from './profile';
 import { ExerciseType, SleepStageType, RecordResult } from 'react-native-health-connect';
 import { useExerciseSession } from '../hooks/useExerciseSession';
 import { initialize } from 'react-native-health-connect';
@@ -19,11 +20,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const screenWidth = Dimensions.get("window").width;
 
 export default function Home() {
-
-  const { readExerciseSession } = useExerciseSession(new Date('2025-05-29'));
-  const { readHeartRate } = useHeartRate(new Date('2025-05-29'));
-  const { readSleepSession } = useSleepSession(new Date('2025-05-29'));
-  const { readSteps } = useSteps(new Date('2025-05-29'));
+  const [userData, setUserData] = useState({ name: '', email: '' });
+  const { readExerciseSession } = useExerciseSession(new Date());
+  // sample Date '2025-05-29'
+  const { readHeartRate } = useHeartRate(new Date());
+  const { readSleepSession } = useSleepSession(new Date());
+  const { readSteps } = useSteps(new Date());
   const [heartRateData, setHeartRateData] = useState([]);
   const [sleepDataRaw, setSleepDataRaw] = useState([]);
   const [stepsData, setStepsData] = useState([]);
@@ -45,6 +47,15 @@ export default function Home() {
   
   useEffect(() => {
     const fetchHealthData = async () => {
+      const authDataString = await AsyncStorage.getItem('authData');
+      if (authDataString) {
+        const authData = JSON.parse(authDataString);
+        setUserData({
+          name: authData.name || 'User',
+          email: authData.email || ''
+        });
+      }
+
       const isInitialized = await initialize();
 
       if (!isInitialized) {
@@ -113,24 +124,21 @@ export default function Home() {
 
       const getStageValue = (value: number): number => {
         switch (value) {
-          case SleepStageType.AWAKE:
-            return 1;
-          case SleepStageType.LIGHT:
-            return 2;
-          case SleepStageType.DEEP:
-            return 3;
-          case SleepStageType.REM:
-            return 4;
-          default:
-            return 0;
+          case SleepStageType.AWAKE: return 1;
+          case SleepStageType.LIGHT: return 2;
+          case SleepStageType.DEEP: return 3;
+          case SleepStageType.REM: return 4;
+          default: return 0;
         }
       };
 
       sleepStages.forEach((stage) => {
         const start = new Date(stage.startTime);
-        const label = `${start.getHours()}:${String(start.getMinutes()).padStart(2, '0')}`;
-        labels.push(label);
-
+        const hour = start.getHours();
+        const minute = String(start.getMinutes()).padStart(2, '0');
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const displayHour = hour % 12 || 12;
+        labels.push(`${displayHour}:${minute} ${ampm}`);
         const numericValue = getStageValue(stage.stage);
         data.push(numericValue);
       });
@@ -141,7 +149,7 @@ export default function Home() {
           {
             data,
             color: (opacity = 1) => `rgba(162, 89, 255, ${opacity})`,
-            strokeWidth: 3,
+            strokeWidth: 0, // Remove line
           },
         ],
       });
@@ -165,8 +173,8 @@ export default function Home() {
         <View style={styles.headerLeft}>
           <Image source={require('../assets/images/default-avatar.png')} style={styles.avatar} />
           <View>
-            <Text style={styles.greeting}>Good evening,</Text>
-            <Text style={styles.profileName}>John Doe</Text>
+            <Text style={styles.greeting}>Welcome,</Text>
+            <Text style={styles.profileName}>{userData.name}</Text>
           </View>
         </View>
         <TouchableOpacity 
@@ -175,31 +183,59 @@ export default function Home() {
           <Ionicons name="person-circle-outline" size={32} color="#fff" />
         </TouchableOpacity>
       </View>
-
+    
       <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
+        <View style={{ paddingHorizontal: 16 }}>
+        <Text style={{
+          color: 'skyblue',
+          fontSize: 18,
+          fontWeight: 'bold',
+          textAlign: 'center',
+          marginBottom: 8,
+        }}>
+          Sleep Stages Throughout the Night
+        </Text>
+      </View>
         {selectedTab === 'home' && (
           <>
             {sleepData.labels.length > 0 && (
               <ScrollView horizontal>
+                
                 <LineChart
                   data={sleepData}
                   width={Math.max(screenWidth, sleepData.labels.length * 60)}
-                  height={220}
+                  height={250}
                   chartConfig={{
                     backgroundColor: '#23234b',
                     backgroundGradientFrom: '#23234b',
                     backgroundGradientTo: '#1a1a2e',
-                    decimalPlaces: 1,
+                    decimalPlaces: 0,
                     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                    style: { borderRadius: 16 },
                     propsForDots: {
                       r: '6',
                       strokeWidth: '2',
                       stroke: '#a259ff',
                     },
                   }}
-                  bezier
+                  withInnerLines={false}
+                  withOuterLines={false}
+                  withShadow={false}
+                  withVerticalLines={false}
+                  withHorizontalLabels={true}
+                  fromZero
+                  yLabelsOffset={20}
+                  yAxisLabel=""
+                  formatYLabel={(value) => {
+                    const stageNum = parseInt(value);
+                    switch (stageNum) {
+                      case 1: return 'AWAKE';
+                      case 2: return 'LIGHT';
+                      case 3: return 'DEEP';
+                      case 4: return 'REM';
+                      default: return '';
+                    }
+                  }}
                   style={{
                     marginVertical: 16,
                     borderRadius: 16,
@@ -223,7 +259,7 @@ export default function Home() {
               style={styles.syncButton}
               onPress={async () => {
 
-                await syncToDB(heartRateData, sleepDataRaw, stepsData, "6823168936d28adf4ef5105e");
+                await syncToDB(heartRateData, sleepDataRaw, stepsData, "687fb28567d7b267a20fcf2d");
               }}>
               <Text style={styles.syncButtonText}>Sync data to database</Text>
             </TouchableOpacity>
@@ -232,6 +268,7 @@ export default function Home() {
 
         {selectedTab === 'recommendations' && <SleepReco />}
         {selectedTab === 'diary' && <Diary />}
+        {selectedTab === 'profile' && <Profile />}
       </ScrollView>
 
       <View style={styles.bottomNavContainer}>

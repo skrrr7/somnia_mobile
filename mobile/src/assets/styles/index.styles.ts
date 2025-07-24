@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   featuresContainer: {
-    marginBottom: 30,
+    marginBottom: 15,
   },
   featureCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
