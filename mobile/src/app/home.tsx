@@ -259,7 +259,7 @@ export default function Home() {
               style={styles.syncButton}
               onPress={async () => {
 
-                await syncToDB(heartRateData, sleepDataRaw, stepsData, "687fb28567d7b267a20fcf2d");
+                await syncToDB(heartRateData, sleepDataRaw, stepsData, "68832672731725ac9a4373bc");
               }}>
               <Text style={styles.syncButtonText}>Sync data to database</Text>
             </TouchableOpacity>
