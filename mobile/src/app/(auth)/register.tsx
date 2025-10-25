@@ -15,7 +15,7 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
 
   const router = useRouter();
-  const backendUrl = 'http://192.168.1.8:4000';
+  const backendUrl = 'http://192.168.147.110:4000';
 
   const handleRegister = async () => {
     if (!email || !name || !password) {
