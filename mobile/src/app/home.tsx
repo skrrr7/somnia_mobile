@@ -8,6 +8,7 @@ import { LineChart } from 'react-native-chart-kit';
 import SleepReco from './sleepReco';
 import Diary from './diary';
 import Profile from './profile';
+import Tips from './tips';
 import { ExerciseType, SleepStageType, RecordResult } from 'react-native-health-connect';
 import { useExerciseSession } from '../hooks/useExerciseSession';
 import { initialize } from 'react-native-health-connect';
@@ -280,7 +281,7 @@ export default function Home() {
           </>
         )}
 
-        {selectedTab === 'recommendations' && <SleepReco />}
+        {selectedTab === 'recommendations' && <Tips />}
         {selectedTab === 'diary' && <Diary />}
         {selectedTab === 'profile' && <Profile />}
       </ScrollView>

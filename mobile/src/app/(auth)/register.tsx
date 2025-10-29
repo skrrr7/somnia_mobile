@@ -15,23 +15,34 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
 
   const router = useRouter();
-  const backendUrl = 'http://192.168.147.110:4000';
+  const backendUrl = 'http://192.168.1.8:4000';
 
   const handleRegister = async () => {
+    console.log('Register button pressed!');
+    console.log('Form data:', { email, name, password });
+    
     if (!email || !name || !password) {
+      console.log('Missing fields detected');
       Toast.show({
         type: 'error',
         text1: 'Please fill in all fields!',
       });
       return;
     }
+    
+    console.log('Starting registration...');
     setIsLoading(true);
     const userData = { email, name, password };
+    
     try {
+      console.log('Sending request to:', `${backendUrl}/api/auth/register`);
       const response = await axios.post(`${backendUrl}/api/auth/register`, userData, {
         headers: { 'Content-Type': 'application/json' },
         withCredentials: true,
       });
+      
+      console.log('Registration response:', response.data);
+      
       if (response.data.success) {
         Toast.show({ type: 'success', text1: 'Account created successfully!' });
         router.replace('/(auth)/login');
@@ -39,7 +50,12 @@ export default function Register() {
         Toast.show({ type: 'error', text1: 'Registration failed. Please try again.' });
       }
     } catch (error) {
-      Toast.show({ type: 'error', text1: 'An error occurred. Please try again later.' });
+      console.log('Registration error:', error);
+      console.log('Error response:', error.response?.data);
+      console.log('Error status:', error.response?.status);
+      
+      const errorMessage = error.response?.data?.message || 'An error occurred. Please try again later.';
+      Toast.show({ type: 'error', text1: errorMessage });
     } finally {
       setIsLoading(false);
     }

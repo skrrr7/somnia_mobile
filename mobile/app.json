@@ -42,15 +42,12 @@
     },
     "plugins": [
       "expo-router",
-      "react-native-health-connect",
-      "expo-build-properties",
-      "expo-health-connect",
       [
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 34,
-            "targetSdkVersion": 34,
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
             "minSdkVersion": 26
           }
         }
@@ -62,8 +59,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "somnia"
+        "projectId": "126a43ca-b19a-4511-9039-79a36a36b59f"
       }
-    }
+    },
+    "owner": "esco777"
   }
 }
