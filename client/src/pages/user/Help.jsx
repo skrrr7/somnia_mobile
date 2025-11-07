@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import {
   QuestionMarkCircleIcon,
   ChatBubbleLeftRightIcon,
@@ -8,6 +9,7 @@ import {
   ChevronDownIcon,
   EnvelopeIcon,
   PhoneIcon,
+  ArrowLeftIcon
 } from '@heroicons/react/24/outline';
 
 const Help = () => {
@@ -31,34 +33,107 @@ const Help = () => {
       {
         id: 2,
         question: 'What devices are compatible with SOMNiA?',
-        answer: 'SOMNiA is compatible with most major smartwatches and fitness trackers, including Apple Watch, Fitbit, and Garmin devices. Check our device compatibility list for specific models.',
+        answer: 'SOMNiA is compatible with most major smartwatches and fitness trackers, including Apple Watch, Fitbit, and Garmin devices.',
+      },
+      {
+        id: 3,
+        question: 'Is SOMNiA free to use?',
+        answer: 'SOMNiA offers both free and premium tiers. The free version includes basic sleep tracking and insights. Premium features include advanced analytics, personalized coaching, and detailed sleep reports.',
+      },
+      {
+        id: 4,
+        question: 'How do I get started with SOMNiA?',
+        answer: 'After creating your account, complete your sleep profile with your goals and preferences. Connect your device through Settings > Connected Devices, and wear it while sleeping to start tracking.',
+      },
+      {
+        id: 6,
+        question: 'Can I use SOMNiA without a wearable device?',
+        answer: 'While wearable devices provide the most accurate data, you can still use SOMNiA to log sleep manually, access our library of sleep tips, and track your sleep goals and habits.',
       },
     ],
     tracking: [
       {
-        id: 3,
+        id: 7,
         question: 'How accurate is the sleep tracking?',
         answer: 'Our sleep tracking accuracy is typically above 90% when compared to clinical sleep studies. The accuracy depends on wearing your device properly and maintaining good contact with your skin.',
       },
       {
-        id: 4,
+        id: 8,
         question: 'What metrics are tracked during sleep?',
-        answer: 'We track multiple metrics including sleep duration, sleep stages (light, deep, REM), heart rate variability, breathing rate, and movement patterns.',
+        answer: 'We track multiple metrics including sleep duration, sleep stages (light, deep, REM), heart rate variability, breathing rate, movement patterns, and environmental factors like room temperature.',
+      },
+      {
+        id: 9,
+        question: 'Why does my sleep data sometimes seem inaccurate?',
+        answer: 'Inaccuracies can occur due to loose device fit, low battery, movement during awake periods, or sleeping with pets/partners. Ensure your device is snug but comfortable and has adequate battery.',
+      },
+      {
+        id: 10,
+        question: 'How long does it take to see sleep patterns?',
+        answer: 'You\'ll start seeing basic insights after your first night, but meaningful patterns and trends typically emerge after 7-14 days of consistent tracking.',
+      },
+      {
+        id: 11,
+        question: 'Can I edit or delete incorrect sleep data?',
+        answer: 'Yes, you can manually edit sleep times or delete incorrect entries in your sleep history. Go to Sleep History > Select Date > Edit Entry to make corrections.',
+      },
+      {
+        id: 12,
+        question: 'What if I forget to wear my device?',
+        answer: 'You can manually log your sleep by going to Sleep Log > Add Manual Entry. While not as detailed as device data, it helps maintain your sleep tracking consistency.',
       },
     ],
     technical: [
       {
-        id: 5,
+        id: 13,
         question: 'How do I sync my device with SOMNiA?',
         answer: 'Go to Settings > Connected Devices and follow the on-screen instructions to pair your device. Make sure Bluetooth is enabled on both your phone and tracking device.',
       },
+      {
+        id: 14,
+        question: 'My device won\'t sync. What should I do?',
+        answer: 'First, check that Bluetooth is enabled and your device is charged. Try restarting both devices, ensure you\'re within Bluetooth range, and check if your device needs a firmware update.',
+      },
+      {
+        id: 15,
+        question: 'How often does data sync?',
+        answer: 'Data typically syncs automatically when you open the app, or you can manually sync by pulling down on the dashboard. Most devices sync data every 15-30 minutes when connected.',
+      },
+      {
+        id: 16,
+        question: 'Can I export my sleep data?',
+        answer: 'Premium users can export their data in CSV or PDF format. Go to Settings > Data Export to download your sleep history, trends, and insights.',
+      },
+      {
+        id: 17,
+        question: 'Is my data secure and private?',
+        answer: 'Yes, all data is encrypted in transit and at rest. You can review our privacy policy for detailed information.',
+      },
+      
     ],
     account: [
       {
-        id: 6,
+        id: 19,
         question: 'How do I change my sleep goals?',
         answer: 'You can adjust your sleep goals in the Profile section. Navigate to Profile > Sleep Preferences to customize your target sleep duration and schedule.',
       },
+      {
+        id: 20,
+        question: 'How do I reset my password?',
+        answer: 'On the login screen, tap "Forgot Password" and enter your email address. You\'ll receive a reset link via email. You can also change your password in Profile > Account Settings.',
+      },
+      
+      {
+        id: 24,
+        question: 'What happens to my data if I delete my account?',
+        answer: 'All your personal data and sleep history will be permanently deleted within 30 days. You can export your data before deletion if needed.',
+      },
+      {
+        id: 25,
+        question: 'Can I use the same account on multiple devices?',
+        answer: 'Yes, you can sign in to your account on multiple phones or tablets. Your sleep data and settings will sync across all devices.',
+      },
+      
     ],
   };
 
@@ -84,14 +159,19 @@ const Help = () => {
 
   return (
     <div className="min-h-screen bg-[#0A1628] p-8">
-      {/* Background gradients */}
       <div className="fixed inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-purple-900/20 pointer-events-none" />
-      
-      <div className="max-w-4xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="text-center">
-          <h1 className="text-3xl font-light text-white mb-4">Help & Support</h1>
-          <p className="text-gray-400">Find answers to common questions or get in touch with our support team</p>
+
+      <div className="max-w-4xl mx-auto space-y-8 p-8">
+        <div className="flex items-center justify-center space-x-4">
+          <Link
+            to="/dashboard"
+            className="p-2 bg-gray-900/50 text-gray-400 rounded-lg hover:bg-gray-800/50 hover:text-white transition-all duration-200 border border-gray-800/50"
+          >
+            <ArrowLeftIcon className="w-5 h-5" />
+          </Link>
+          <div>
+            <h1 className="text-3xl font-light text-white">Help & Support</h1>
+          </div>
         </div>
 
         {/* Categories */}
@@ -123,7 +203,7 @@ const Help = () => {
             >
               <button
                 onClick={() => setExpandedFaq(expandedFaq === faq.id ? null : faq.id)}
-                className="w-full flex items-center justify-between p-6 text-left"
+                className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-900/70 transition-colors"
               >
                 <span className="text-white font-light">{faq.question}</span>
                 <ChevronDownIcon
@@ -133,20 +213,24 @@ const Help = () => {
                 />
               </button>
               {expandedFaq === faq.id && (
-                <div className="px-6 pb-6 text-gray-400 text-sm leading-relaxed">
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="px-6 pb-6 text-gray-400 text-sm leading-relaxed border-t border-gray-800/30"
+                >
                   {faq.answer}
-                </div>
+                </motion.div>
               )}
             </motion.div>
           ))}
         </div>
 
-        {/* Contact Options */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
           <ContactCard
             icon={EnvelopeIcon}
             title="Email Support"
-            value="Get help via email with a response time of 24 hours"
+            value="Get help via email with our support team"
             action={() => window.location.href = 'mailto:support@somnia.com'}
             actionLabel="Send Email"
           />
@@ -163,4 +247,4 @@ const Help = () => {
   );
 };
 
-export default Help; 
+export default Help;
