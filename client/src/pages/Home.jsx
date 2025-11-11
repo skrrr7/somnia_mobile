@@ -92,8 +92,8 @@ const Home = () => {
               transition={{ delay: 0.2 }}
               className="text-5xl md:text-6xl font-light text-white mb-6 tracking-tight"
             >
-              Predict Sleep Issues <br className="hidden md:block" />
-              <span className="bg-gradient-to-r from-blue-400 to-blue-500 text-transparent bg-clip-text">Before They Start</span>
+              Discover Your Insomnia Probability  <br className="hidden md:block" />
+              <span className="bg-gradient-to-r from-blue-400 to-blue-500 text-transparent bg-clip-text">We Predict What You Might Not Feel</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: -20 }}
@@ -101,7 +101,7 @@ const Home = () => {
               transition={{ delay: 0.3 }}
               className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed font-light"
             >
-              Using advanced AI and your smartwatch data, SOMNiA predicts potential sleep issues
+              Using advanced AI and your smartwatch data, SOMNiA predicts potential sleep insomnia
               and provides personalized recommendations for better rest.
             </motion.p>
             <motion.div
@@ -116,12 +116,7 @@ const Home = () => {
               >
                 Start Tracking Your Sleep
               </button>
-              <button
-                onClick={() => navigate('/login')}
-                className="px-8 py-3.5 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all duration-300 border border-gray-800 font-medium"
-              >
-                Sign In to Dashboard
-              </button>
+             
             </motion.div>
           </div>
         </motion.section>

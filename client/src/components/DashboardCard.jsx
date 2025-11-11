@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import { motion } from 'framer-motion';
+
+
 import {
   HeartIcon,
   ClockIcon,
@@ -41,6 +43,7 @@ const QuickAction = ({ icon: Icon, label, value, onClick, isActive = false }) =>
 
 const DashboardCard = ({ onActionClick, activeView = 'health' }) => {
   const { userData } = useContext(AppContext);
+  
   const quickActions = [
     {
       icon: HeartIcon,

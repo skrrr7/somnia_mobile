@@ -11,9 +11,9 @@ import Dashboard from './pages/Dashboard';
 // Import user pages
 import Profile from './pages/user/Profile';
 import SleepTips from './pages/user/SleepTips';
-import Notifications from './pages/user/Notifications';
+// import Notifications from './pages/user/Notifications';
 import Help from './pages/user/Help';
-import Settings from './pages/user/Settings';
+// import Settings from './pages/user/Settings';
 
 // Import components
 import ProtectedRoute from './components/ProtectedRoute';
@@ -47,21 +47,21 @@ const App = () => {
             <SleepTips/>
           </ProtectedRoute>
         } />
-        <Route path="/notifications" element={
+        {/* <Route path="/notifications" element={
           <ProtectedRoute>
             <Notifications/>
           </ProtectedRoute>
-        } />
+        } /> */}
         <Route path="/help" element={
           <ProtectedRoute>
             <Help/>
           </ProtectedRoute>
         } />
-        <Route path="/settings" element={
+        {/* <Route path="/settings" element={
           <ProtectedRoute>
             <Settings/>
           </ProtectedRoute>
-        } />
+        } /> */}
       </Routes>
     </div>
   );

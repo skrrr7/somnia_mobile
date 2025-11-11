@@ -35,21 +35,21 @@ const Sidebar = () => {
       icon: LightBulbIcon,
       path: '/sleep-tips',
     },
-    {
-      name: 'Notifications',
-      icon: BellIcon,
-      path: '/notifications',
-    },
+    // {
+    //   name: 'Notifications',
+    //   icon: BellIcon,
+    //   path: '/notifications',
+    // },
     {
       name: 'Help & Support',
       icon: QuestionMarkCircleIcon,
       path: '/help',
     },
-    {
-      name: 'Settings',
-      icon: Cog6ToothIcon,
-      path: '/settings',
-    },
+    // {
+    //   name: 'Settings',
+    //   icon: Cog6ToothIcon,
+    //   path: '/settings',
+    // },
   ];
 
   const NavItem = ({ item }) => (

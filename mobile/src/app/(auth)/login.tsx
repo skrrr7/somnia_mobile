@@ -23,6 +23,7 @@ export default function Login() {
     const handleLogin = async () => {
         setIsLoading(true);
 
+
         // Create user data object
         const userData = { 
             email, 
@@ -42,7 +43,7 @@ export default function Login() {
             // Handle successful login
             if (response.data.success) {
                 console.log('Login successful, response:', response.data);
-                
+               
                 // Extract token from cookie
                 const token = response.headers['set-cookie']?.[0]?.split(';')[0]?.split('=')[1];
                 

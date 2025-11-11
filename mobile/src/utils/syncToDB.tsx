@@ -24,6 +24,7 @@ const getAuthToken = async () => {
     }
 };
 
+
 export const syncToDB = async (
     heartRate: RecordResult<"HeartRate">[],
     sleepSession: RecordResult<"SleepSession">[],

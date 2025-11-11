@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import {
   MoonIcon,
   SunIcon,
@@ -7,6 +8,7 @@ import {
   HeartIcon,
   BookOpenIcon,
   LightBulbIcon,
+  ArrowLeftIcon
 } from '@heroicons/react/24/outline';
 
 const SleepTips = () => {
@@ -21,6 +23,7 @@ const SleepTips = () => {
   ];
 
   const tips = [
+    // Bedtime Routine Tips
     {
       id: 1,
       category: 'routine',
@@ -30,23 +33,110 @@ const SleepTips = () => {
     },
     {
       id: 2,
+      category: 'routine',
+      title: 'Wind-Down Routine',
+      description: 'Create a relaxing 30-60 minute routine before bed. Try reading, gentle stretching, or meditation to signal your body it\'s time to sleep.',
+      icon: MoonIcon,
+    },
+    {
+      id: 3,
+      category: 'routine',
+      title: 'Avoid Late Naps',
+      description: 'If you must nap, keep it under 20 minutes and before 3 PM. Late or long naps can interfere with nighttime sleep.',
+      icon: MoonIcon,
+    },
+    {
+      id: 4,
+      category: 'routine',
+      title: 'Progressive Muscle Relaxation',
+      description: 'Practice tensing and relaxing each muscle group from your toes to your head. This technique helps release physical tension before sleep.',
+      icon: MoonIcon,
+    },
+    // Sleep Environment Tips
+    {
+      id: 5,
       category: 'environment',
       title: 'Optimal Room Temperature',
       description: 'Keep your bedroom temperature between 60-67°F (15-19°C) for optimal sleep conditions.',
       icon: SunIcon,
     },
     {
-      id: 3,
+      id: 6,
+      category: 'environment',
+      title: 'Dark Sleep Environment',
+      description: 'Use blackout curtains or an eye mask to block out light. Even small amounts of light can disrupt your sleep cycle.',
+      icon: SunIcon,
+    },
+    {
+      id: 7,
+      category: 'environment',
+      title: 'Comfortable Mattress & Pillows',
+      description: 'Invest in a supportive mattress and comfortable pillows. Replace your mattress every 7-10 years and pillows every 1-2 years.',
+      icon: SunIcon,
+    },
+    {
+      id: 8,
+      category: 'environment',
+      title: 'Minimize Noise',
+      description: 'Use earplugs, a white noise machine, or a fan to mask disruptive sounds. Consistent, gentle sounds can actually promote better sleep.',
+      icon: SunIcon,
+    },
+    // Healthy Habits Tips
+    {
+      id: 9,
       category: 'habits',
       title: 'Avoid Screen Time',
       description: 'Stop using electronic devices at least 1 hour before bedtime to reduce blue light exposure.',
       icon: HeartIcon,
     },
     {
-      id: 4,
+      id: 10,
+      category: 'habits',
+      title: 'Watch Your Diet',
+      description: 'Avoid large meals, caffeine, and alcohol close to bedtime. Stop eating 2-3 hours before sleep and limit caffeine after 2 PM.',
+      icon: HeartIcon,
+    },
+    {
+      id: 11,
+      category: 'habits',
+      title: 'Regular Exercise',
+      description: 'Exercise regularly, but not within 3-4 hours of bedtime. Physical activity can improve sleep quality and help you fall asleep faster.',
+      icon: HeartIcon,
+    },
+    {
+      id: 12,
+      category: 'habits',
+      title: 'Morning Sunlight',
+      description: 'Get 15-30 minutes of natural sunlight within the first hour of waking. This helps regulate your circadian rhythm and improve nighttime sleep.',
+      icon: HeartIcon,
+    },
+    // Sleep Science Tips
+    {
+      id: 13,
       category: 'science',
       title: 'Sleep Cycles',
       description: 'Understanding your sleep cycles can help you wake up feeling more refreshed. Each cycle lasts about 90 minutes.',
+      icon: BeakerIcon,
+    },
+    {
+      id: 14,
+      category: 'science',
+      title: 'Circadian Rhythm',
+      description: 'Your body\'s internal clock regulates sleep-wake cycles. Consistent light exposure and timing help maintain this natural rhythm.',
+      icon: BeakerIcon,
+    },
+    {
+      id: 15,
+      category: 'science',
+      title: 'Sleep Debt',
+      description: 'Lost sleep accumulates as "sleep debt." While you can\'t fully make up lost sleep, consistent good sleep habits help your body recover.',
+      icon: BeakerIcon,
+    },
+    {
+      id: 16,
+      category: 'science',
+      title: 'REM and Deep Sleep',
+      description: 'Both REM and deep sleep stages are crucial. Deep sleep restores your body, while REM sleep consolidates memories and emotions.',
       icon: BeakerIcon,
     },
   ];
@@ -78,6 +168,16 @@ const SleepTips = () => {
       {/* Background gradients */}
       <div className="fixed inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-purple-900/20 pointer-events-none" />
       
+      
+  {/* Header */}
+  <div className="flex items-center space-x-4">
+    <Link
+      to="/dashboard"
+      className="p-2 bg-gray-900/50 text-gray-400 rounded-lg hover:bg-gray-800/50 hover:text-white transition-all duration-200 border border-gray-800/50"
+    >
+      <ArrowLeftIcon className="w-5 h-5" />
+    </Link>
+  </div>
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center">
@@ -130,31 +230,10 @@ const SleepTips = () => {
           ))}
         </div>
 
-        {/* Daily Challenge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl p-6 border border-blue-500/20"
-        >
-          <div className="flex items-start space-x-4">
-            <div className="p-3 bg-blue-500/20 rounded-lg">
-              <LightBulbIcon className="w-6 h-6 text-blue-400" />
-            </div>
-            <div>
-              <h3 className="text-lg text-white font-light mb-2">Today's Sleep Challenge</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                Try to reduce your screen time by 30 minutes before bedtime tonight. 
-                Replace it with light reading or meditation to help your mind wind down.
-              </p>
-              <button className="mt-4 px-4 py-2 bg-blue-500/10 text-blue-400 rounded-lg hover:bg-blue-500/20 transition-colors text-sm">
-                Accept Challenge
-              </button>
-            </div>
-          </div>
-        </motion.div>
+      
       </div>
     </div>
   );
 };
 
-export default SleepTips; 
+export default SleepTips;
